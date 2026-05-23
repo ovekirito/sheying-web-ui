@@ -1,0 +1,3666 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ovekirito personal photography portfolio">
+  <title>ovekirito | photography & creativity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================================
+       Global base
+    ========================================================= */
+    :root {
+      --bg: oklch(0.12 0.003 85);
+      --bg-soft: oklch(0.18 0.003 85);
+      --text: oklch(0.94 0.008 85);
+      --accent: oklch(0.72 0.17 55);
+      --muted: #b7b7b7;
+      --dim: rgba(255, 255, 255, 0.58);
+      --line: rgba(255, 255, 255, 0.16);
+      --glass: rgba(255, 255, 255, 0.055);
+      --font-display: "Playfair Display", Georgia, serif;
+      --font-body: "Inter", Arial, sans-serif;
+      --font-signature: "Dancing Script", cursive;
+      --ease: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      height: 100%;
+      background: var(--bg);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body.ready .site-scroll {
+      animation: siteFadeIn 0.8s var(--ease) both;
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-scroll {
+      height: 100svh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      scroll-behavior: auto;
+      scroll-snap-type: none;
+      opacity: 0;
+      background: var(--bg);
+    }
+
+    .panel {
+      position: relative;
+      min-height: 100svh;
+      padding: clamp(28px, 5vw, 72px);
+      overflow: hidden;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      isolation: isolate;
+    }
+
+    .section-eyebrow {
+      color: rgba(255, 255, 255, 0.46);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .icon-button {
+      display: inline-grid;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.055);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .icon-button:hover,
+    .icon-button:focus-visible {
+      border-color: rgba(255, 255, 255, 0.42);
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .icon-button svg {
+      width: 21px;
+      height: 21px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.7;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @keyframes siteFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* =========================================================
+       Global loading animation
+    ========================================================= */
+    .preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      background: oklch(0.10 0.003 85);
+      transition: opacity 0.8s var(--ease), visibility 0.8s var(--ease);
+    }
+
+    .preloader.is-hidden {
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader-inner {
+      width: min(420px, 72vw);
+      text-align: center;
+    }
+
+    .loader-copy {
+      margin-bottom: 18px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      letter-spacing: 0.18em;
+    }
+
+    .loader-track {
+      width: 100%;
+      height: 1px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .loader-fill {
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.92);
+      transform: scaleX(0);
+      transform-origin: left center;
+      animation: loadLine 2.65s var(--ease) forwards;
+    }
+
+    @keyframes loadLine {
+      0% {
+        transform: scaleX(0);
+      }
+      55% {
+        transform: scaleX(0.72);
+      }
+      100% {
+        transform: scaleX(1);
+      }
+    }
+
+    /* =========================================================
+       Section 1: Home
+    ========================================================= */
+    .home {
+      display: grid;
+      align-items: center;
+      background: oklch(0.12 0.003 85);
+    }
+
+    .home::before {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      content: "";
+      background-image: url("Homepage/1.jpg");
+      background-position: center center;
+      background-size: cover;
+      filter: saturate(1.02) contrast(1.02) brightness(0.98);
+      opacity: 1;
+      transform: scale(1.02);
+    }
+
+    .home::after {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      content: "";
+      background:
+        radial-gradient(circle at 48% 54%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 34%, rgba(255, 255, 255, 0) 58%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(0, 0, 0, 0.08) 55%, rgba(0, 0, 0, 0.48) 100%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0) 44%, rgba(0, 0, 0, 0.22) 100%);
+    }
+
+    .home-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      width: min(1360px, 100%);
+      min-height: 66svh;
+      margin: 0 auto;
+      place-items: center;
+      padding-top: 0;
+      overflow: hidden;
+    }
+
+    .home-kicker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: clamp(0.72rem, 0.9vw, 0.92rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+    }
+
+    .home-title {
+      display: flex;
+      width: min(1120px, 92vw);
+      min-height: clamp(260px, 42svh, 500px);
+      margin: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      overflow: visible;
+      color: rgba(255, 255, 255, 0.94);
+      font-family: var(--font-display);
+      line-height: 0.88;
+      text-align: left;
+      letter-spacing: 0;
+    }
+
+    .home-title span {
+      display: block;
+      max-width: 100%;
+      text-shadow: 0 4px 32px rgba(0, 0, 0, 0.56), 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .home-title .title-main {
+      font-size: clamp(4.8rem, 10.4vw, 12.8rem);
+      font-weight: 700;
+    }
+
+    .home-title .title-sub {
+      align-self: flex-end;
+      margin-top: 0.04em;
+      padding-right: 0.04em;
+      font-size: clamp(3rem, 6vw, 7.5rem);
+      font-weight: 600;
+      font-style: italic;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      z-index: 1;
+      left: 50%;
+      bottom: clamp(28px, 5vh, 54px);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      transform: translateX(-50%);
+    }
+
+    .scroll-hint svg {
+      width: 16px;
+      height: 16px;
+      animation: arrowFloat 1.6s ease-in-out infinite;
+    }
+
+    @keyframes arrowFloat {
+      0%,
+      100% {
+        transform: translateY(-3px);
+        opacity: 0.45;
+      }
+      50% {
+        transform: translateY(4px);
+        opacity: 1;
+      }
+    }
+
+    /* =========================================================
+       Section 2: Portfolio Slider
+    ========================================================= */
+    .portfolio {
+      display: grid;
+      align-content: center;
+      gap: clamp(20px, 3vw, 42px);
+      background:
+        linear-gradient(180deg, oklch(0.16 0.003 85) 0%, oklch(0.10 0.003 85) 100%);
+    }
+
+    .portfolio-head {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .portfolio-title {
+      margin: 8px 0 0;
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.2vw, 5.4rem);
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .carousel-shell {
+      position: relative;
+      display: flex;
+      width: min(1640px, 100%);
+      min-height: min(760px, 74svh);
+      margin: 0 auto;
+      align-items: center;
+      justify-content: center;
+      perspective: 1400px;
+    }
+
+    .carousel-shell::before,
+    .carousel-shell::after {
+      position: absolute;
+      top: 6%;
+      bottom: 12%;
+      z-index: 11;
+      width: clamp(84px, 13vw, 210px);
+      content: "";
+      pointer-events: none;
+    }
+
+    .carousel-shell::before {
+      left: 0;
+      background: linear-gradient(90deg, oklch(0.10 0.003 85) 0%, oklch(0.10 0.003 85 / 0.82) 34%, oklch(0.10 0.003 85 / 0) 100%);
+    }
+
+    .carousel-shell::after {
+      right: 0;
+      background: linear-gradient(270deg, oklch(0.10 0.003 85) 0%, oklch(0.10 0.003 85 / 0.82) 34%, oklch(0.10 0.003 85 / 0) 100%);
+    }
+
+    .coverflow {
+      position: relative;
+      width: min(1420px, 94vw);
+      height: min(690px, 68svh);
+      cursor: grab;
+      outline: none;
+      touch-action: pan-y;
+      transform-style: preserve-3d;
+      user-select: none;
+    }
+
+    .coverflow.dragging {
+      cursor: grabbing;
+    }
+
+    .carousel-card {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      width: min(920px, 68vw);
+      height: min(620px, 62svh);
+      margin: auto;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transform-style: preserve-3d;
+      transition: transform 0.68s var(--ease), opacity 0.68s var(--ease), filter 0.68s var(--ease);
+      will-change: transform, opacity;
+    }
+
+    .carousel-card.is-active {
+      pointer-events: auto;
+    }
+
+    .photo-matte {
+      --portfolio-photo-radius: clamp(14px, 1.4vw, 24px);
+      position: relative;
+      display: flex;
+      width: 100%;
+      height: calc(100% - 46px);
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      isolation: isolate;
+    }
+
+    .photo-matte::before,
+    .photo-matte::after {
+      position: absolute;
+      display: none;
+      content: "";
+      pointer-events: none;
+    }
+
+    .photo-matte::before {
+      inset: -10%;
+      z-index: 0;
+      background: var(--photo-bg) center / cover no-repeat;
+      filter: blur(38px) saturate(1.08);
+      opacity: 0.42;
+      transform: scale(1.1);
+      mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.42) 42%, #000 72%, transparent 100%);
+    }
+
+    .photo-matte::after {
+      inset: -2%;
+      z-index: 0;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0) 62%, rgba(255, 255, 255, 0.05) 80%, rgba(255, 255, 255, 0.16) 100%),
+        radial-gradient(ellipse at center, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 58%);
+      opacity: 0.7;
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.6) 48%, #000 76%, transparent 100%);
+    }
+
+    .portfolio-photo {
+      position: relative;
+      z-index: 2;
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: var(--portfolio-photo-radius);
+      box-shadow: 0 22px 46px rgba(0, 0, 0, 0.36);
+      image-rendering: auto;
+    }
+
+    .placeholder-photo {
+      position: relative;
+      display: grid;
+      overflow: hidden;
+      place-items: center;
+      border-radius: 3px;
+      color: #fff;
+    }
+
+    .placeholder-photo::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at center, #000 0%, transparent 78%);
+      opacity: 0.22;
+    }
+
+    .placeholder-photo.horizontal {
+      width: 100%;
+      max-height: 100%;
+      aspect-ratio: 16 / 9;
+    }
+
+    .placeholder-photo.vertical {
+      height: 100%;
+      max-width: 100%;
+      aspect-ratio: 2 / 3;
+    }
+
+    .ph-scenery {
+      background: linear-gradient(135deg, #0d3b49 0%, #1d7c79 54%, #8fc4b6 100%);
+    }
+
+    .ph-exhibition {
+      background: linear-gradient(135deg, #4a321a 0%, #b37a31 48%, #f1d48b 100%);
+    }
+
+    .ph-animal {
+      background: linear-gradient(135deg, #2d2419 0%, #776141 50%, #c8b58a 100%);
+    }
+
+    .ph-portrait {
+      background: linear-gradient(135deg, #53322e 0%, #b88577 54%, #f0cfc0 100%);
+    }
+
+    .placeholder-label {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 5.6em;
+      padding: 0.56em 0.86em;
+      border: 1px solid rgba(255, 255, 255, 0.38);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.18);
+      color: rgba(255, 255, 255, 0.92);
+      font-size: clamp(1rem, 2vw, 2.1rem);
+      font-weight: 600;
+      backdrop-filter: blur(12px);
+    }
+
+    .orientation-badge {
+      position: absolute;
+      right: 18px;
+      bottom: 16px;
+      z-index: 1;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .card-caption {
+      width: 100%;
+      margin: 16px 0 0;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      z-index: 12;
+      transform: translateY(-50%);
+    }
+
+    .carousel-btn:hover,
+    .carousel-btn:focus-visible {
+      transform: translateY(calc(-50% - 2px));
+    }
+
+    .carousel-btn.prev {
+      left: clamp(0px, 2vw, 34px);
+    }
+
+    .carousel-btn.next {
+      right: clamp(0px, 2vw, 34px);
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .carousel-dot {
+      width: 7px;
+      height: 7px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.24);
+      cursor: pointer;
+      transition: width 0.35s var(--ease), background 0.35s var(--ease);
+    }
+
+    .carousel-dot[aria-current="true"] {
+      width: 26px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    /* =========================================================
+       Section 3: Category Gallery
+    ========================================================= */
+    .gallery {
+      display: block;
+      padding: 0;
+      background: oklch(0.14 0.003 85);
+    }
+
+    .gallery-layout {
+      position: relative;
+      width: 100%;
+      min-height: 100svh;
+      margin: 0;
+    }
+
+    .gallery-sidebar {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      min-height: 100svh;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(26px, 4vw, 64px);
+      pointer-events: none;
+    }
+
+    .gallery-sidebar > * {
+      pointer-events: auto;
+    }
+
+    .gallery-controls {
+      display: grid;
+      width: min(520px, 42vw);
+      gap: clamp(28px, 6vh, 76px);
+    }
+
+    .category-slider {
+      display: block;
+      width: 100%;
+    }
+
+    .category-nav {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(12px, 2.4vh, 26px);
+      min-width: 0;
+      max-height: min(62vh, 640px);
+      overflow: hidden;
+      scroll-behavior: smooth;
+    }
+
+    .category-btn {
+      flex: 0 0 auto;
+      width: fit-content;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.34);
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.7vw, 4.7rem);
+      font-weight: 500;
+      line-height: 0.92;
+      text-align: left;
+      white-space: nowrap;
+      backdrop-filter: none;
+      text-shadow: 0 16px 42px rgba(0, 0, 0, 0.4);
+      transition: color 0.38s var(--ease), opacity 0.38s var(--ease), transform 0.38s var(--ease);
+    }
+
+    .category-btn.category-depth-0 {
+      color: var(--text);
+      font-size: clamp(1.65rem, 2.35vw, 2.8rem);
+      font-weight: 800;
+      opacity: 1;
+      transform: translateX(8px);
+    }
+
+    .category-btn.category-depth-1 {
+      color: rgba(255, 255, 255, 0.66);
+      font-size: clamp(1.12rem, 1.75vw, 2rem);
+      opacity: 0.82;
+    }
+
+    .category-btn.category-depth-2 {
+      color: rgba(255, 255, 255, 0.38);
+      font-size: clamp(0.88rem, 1.28vw, 1.46rem);
+      opacity: 0.62;
+    }
+
+    .category-btn.category-depth-3 {
+      color: rgba(255, 255, 255, 0.2);
+      font-size: clamp(0.68rem, 0.9vw, 1.02rem);
+      opacity: 0.44;
+    }
+
+    .category-btn:hover,
+    .category-btn:focus-visible {
+      color: rgba(255, 255, 255, 0.72);
+      outline: none;
+      transform: translateX(8px);
+    }
+
+    .category-btn.is-active {
+      color: var(--accent);
+      font-weight: 700;
+      transform: translateX(8px) scale(1.02);
+    }
+
+    .identity-block {
+      display: grid;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .signature {
+      font-family: var(--font-signature);
+      font-size: clamp(0.98rem, 1.45vw, 1.68rem);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .next-photo {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.055);
+      color: rgba(255, 255, 255, 0.86);
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-weight: 700;
+      transition: transform 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease);
+    }
+
+    .next-photo:hover,
+    .next-photo:focus-visible {
+      border-color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.12);
+      outline: none;
+      transform: translateY(-2px);
+    }
+
+    .next-photo svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.8;
+    }
+
+    .gallery-stage {
+      position: absolute;
+      inset: 0;
+      display: block;
+      min-height: 100svh;
+    }
+
+    .gallery-photo {
+      position: relative;
+      display: block;
+      width: 100%;
+      min-height: 100svh;
+      overflow: hidden;
+      border-radius: 0;
+      background: oklch(0.10 0.003 85);
+      isolation: isolate;
+      transition: opacity 0.42s var(--ease), transform 0.42s var(--ease), background 0.42s var(--ease);
+    }
+
+    .gallery-photo::before {
+      position: absolute;
+      inset: -5%;
+      z-index: 0;
+      content: "";
+      background: var(--gallery-image) center / cover no-repeat;
+      filter: blur(34px) saturate(1.08);
+      opacity: 0.68;
+      transform: scale(1.04);
+    }
+
+    .gallery-photo::after {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      content: "";
+      background:
+        linear-gradient(90deg, rgba(5, 5, 5, 0.74) 0%, rgba(5, 5, 5, 0.34) 18%, rgba(0, 0, 0, 0.08) 38%, rgba(0, 0, 0, 0.08) 62%, rgba(5, 5, 5, 0.34) 82%, rgba(5, 5, 5, 0.74) 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.46) 0%, rgba(0, 0, 0, 0.04) 42%, rgba(0, 0, 0, 0.62) 100%),
+        radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.12), transparent 22vw);
+      opacity: 0.92;
+      pointer-events: none;
+    }
+
+    .gallery-photo-image {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: opacity 0.42s var(--ease), transform 0.42s var(--ease);
+    }
+
+    .gallery-photo.is-portrait .gallery-photo-image {
+      object-fit: contain;
+    }
+
+    .gallery-stage.is-switching .gallery-photo {
+      opacity: 0;
+      transform: translateX(16px);
+    }
+
+    .gallery-photo-label,
+    .gallery-photo-subtitle {
+      position: absolute;
+      z-index: 3;
+    }
+
+    .gallery-photo-label {
+      left: clamp(26px, 4vw, 64px);
+      bottom: clamp(116px, 17vh, 180px);
+      max-width: 11ch;
+      padding: 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.58rem, 3.25vw, 3.85rem);
+      font-weight: 600;
+      line-height: 0.9;
+      overflow-wrap: anywhere;
+    }
+
+    .gallery-photo-subtitle {
+      top: 0;
+      right: 0;
+      max-width: min(46%, 280px);
+      margin: clamp(22px, 3vw, 40px);
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-align: right;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      overflow-wrap: break-word;
+    }
+
+    .gallery-counter {
+      position: absolute;
+      right: clamp(26px, 4vw, 64px);
+      bottom: clamp(26px, 4vw, 64px);
+      z-index: 3;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .gallery-pager {
+      position: absolute;
+      top: 50%;
+      right: clamp(18px, 2.2vw, 36px);
+      z-index: 4;
+      display: grid;
+      justify-items: center;
+      transform: translateY(-50%);
+    }
+
+    .gallery-pager-track {
+      position: relative;
+      width: 28px;
+      height: min(220px, 28vh);
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      cursor: pointer;
+      overflow: visible;
+    }
+
+    .gallery-page-jump {
+      display: grid;
+      width: 28px;
+      height: 34px;
+      margin-top: 16px;
+      padding: 0;
+      place-items: center;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.72);
+      cursor: pointer;
+      transition: color 0.28s var(--ease), transform 0.28s var(--ease);
+    }
+
+    .gallery-page-jump.prev {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    .gallery-page-jump:hover,
+    .gallery-page-jump:focus-visible {
+      color: #ffffff;
+      outline: none;
+      transform: translateY(2px);
+    }
+
+    .gallery-page-jump svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.8;
+    }
+
+    .gallery-pager-track::before {
+      position: absolute;
+      top: 14px;
+      bottom: 14px;
+      left: 50%;
+      width: 2px;
+      content: "";
+      background: rgba(255, 255, 255, 0.28);
+      transform: translateX(-50%);
+    }
+
+    .gallery-pager-fill {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      width: 2px;
+      height: calc((100% - 28px) * var(--gallery-progress, 0));
+      border-radius: 999px;
+      background: var(--accent);
+      transform: translateX(-50%);
+    }
+
+    .gallery-pager-dot {
+      position: absolute;
+      left: 50%;
+      top: calc(14px + (100% - 28px) * var(--gallery-progress, 0));
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 18px oklch(0.72 0.17 55 / 0.45);
+      transform: translate(-50%, -50%);
+    }
+
+
+    /* =========================================================
+       Section 4: Contact / Collaboration
+    ========================================================= */
+    .contact {
+      position: relative;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(ellipse at 72% 28%, oklch(0.72 0.17 55 / 0.07), transparent 52%),
+        radial-gradient(ellipse at 28% 72%, oklch(0.72 0.17 55 / 0.04), transparent 48%),
+        linear-gradient(180deg, oklch(0.14 0.003 85) 0%, oklch(0.10 0.004 85) 100%);
+      overflow: hidden;
+    }
+
+    /* 呼吸菱形背景 */
+    .contact::before {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      content: "";
+      background:
+        linear-gradient(90deg, transparent 47%, rgba(255, 255, 255, 0.03) 50%, transparent 53%) 0 0 / 40px 40px,
+        linear-gradient(0deg, transparent 47%, rgba(255, 255, 255, 0.03) 50%, transparent 53%) 0 0 / 40px 40px,
+        linear-gradient(90deg, transparent 48%, rgba(255, 255, 255, 0.02) 50%, transparent 52%) 0 0 / 120px 120px,
+        linear-gradient(0deg, transparent 48%, rgba(255, 255, 255, 0.02) 50%, transparent 52%) 0 0 / 120px 120px;
+      mask-image:
+        radial-gradient(circle at 30% 20%, rgba(0, 0, 0, 0.8) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(0, 0, 0, 0.6) 0%, transparent 50%);
+      mask-composite: add;
+      opacity: 0.3;
+      animation: diamondPulse 12s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .contact-diamonds {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      mask-image: radial-gradient(ellipse at 50% 58%, transparent 0 34%, rgba(0, 0, 0, 0.28) 50%, #000 78%);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 58%, transparent 0 34%, rgba(0, 0, 0, 0.28) 50%, #000 78%);
+      pointer-events: none;
+    }
+
+    .contact-diamond {
+      --diamond-line: rgba(255, 236, 205, 0.62);
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--w, 22px);
+      height: calc(var(--w, 22px) * 1.74);
+      background: none;
+      filter: blur(var(--blur, 0px)) drop-shadow(0 0 18px oklch(0.72 0.17 55 / 0.28));
+      opacity: 0;
+      transform: translate(-50%, -50%) translateY(18px) scale(0.72);
+      animation: contactDiamondBreath var(--duration, 10s) ease-in-out var(--delay, 0s) infinite;
+    }
+
+    .contact-diamond::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background: var(--diamond-line);
+      mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20174%27%3E%3Cpolygon%20points%3D%2750%202%2098%2087%2050%20172%202%2087%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%274%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E") center / 100% 100% no-repeat;
+      -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20174%27%3E%3Cpolygon%20points%3D%2750%202%2098%2087%2050%20172%202%2087%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%274%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E") center / 100% 100% no-repeat;
+    }
+
+    .contact-diamond::after {
+      display: none;
+    }
+
+    .contact-diamond.is-outline {
+      --diamond-line: rgba(255, 255, 255, 0.5);
+    }
+
+    .contact-diamond.is-soft {
+      --diamond-line: oklch(0.72 0.17 55 / 0.54);
+      filter: blur(0.08px) drop-shadow(0 0 24px oklch(0.72 0.17 55 / 0.3));
+    }
+
+    .contact-inner {
+      position: relative;
+      z-index: 1;
+      width: min(1120px, 100%);
+      margin: auto;
+    }
+
+    .contact-title {
+      margin: 16px 0 clamp(34px, 6vw, 68px);
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 9.8rem);
+      font-weight: 600;
+      line-height: 0.92;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: start;
+      gap: 16px;
+    }
+
+    .contact-card {
+      position: relative;
+      display: grid;
+      min-height: 242px;
+      align-content: center;
+      gap: 22px;
+      padding: clamp(20px, 2.6vw, 34px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--glass);
+      overflow: hidden;
+      transform-origin: center;
+      transition: min-height 0.48s var(--ease), transform 0.42s var(--ease), background 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.42s var(--ease);
+    }
+
+    .contact-card:hover,
+    .contact-card:focus-visible {
+      border-color: rgba(255, 255, 255, 0.38);
+      background: rgba(255, 255, 255, 0.09);
+      outline: none;
+      transform: translateY(-5px);
+    }
+
+    .contact-card.social:hover,
+    .contact-card.social:focus-visible,
+    .contact-card.social.is-revealed {
+      z-index: 3;
+      min-height: 378px;
+      box-shadow: 0 30px 74px rgba(0, 0, 0, 0.32);
+      transform: translateY(-12px) scale(1.035);
+    }
+
+    .contact-social-stage {
+      position: relative;
+      min-height: 76px;
+      display: grid;
+      place-items: center start;
+      transition: min-height 0.52s var(--ease);
+    }
+
+    .contact-card.social:hover .contact-social-stage,
+    .contact-card.social:focus-visible .contact-social-stage,
+    .contact-card.social.is-revealed .contact-social-stage {
+      min-height: 230px;
+    }
+
+    .contact-platform-badge {
+      display: inline-grid;
+      width: 76px;
+      height: 76px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.11);
+      box-shadow: 0 22px 56px rgba(0, 0, 0, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      transition: transform 0.52s var(--ease), opacity 0.52s var(--ease), filter 0.52s var(--ease);
+    }
+
+    .contact-platform-badge svg {
+      width: 34px;
+      height: 34px;
+    }
+
+    .contact-platform-badge.redbook {
+      background: linear-gradient(135deg, rgba(255, 45, 83, 0.34), rgba(255, 255, 255, 0.1));
+    }
+
+    .contact-platform-badge.douyin {
+      background: linear-gradient(135deg, rgba(36, 234, 240, 0.23), rgba(255, 0, 85, 0.22));
+    }
+
+    .contact-card.social:hover .contact-platform-badge,
+    .contact-card.social:focus-visible .contact-platform-badge,
+    .contact-card.social.is-revealed .contact-platform-badge {
+      opacity: 0;
+      filter: blur(3px);
+      transform: translate(12px, -12px) scale(0.72);
+    }
+
+    .contact-qr {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      display: block;
+      height: auto;
+      max-width: none;
+      image-rendering: auto;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .contact-qr-crop {
+      position: absolute;
+      inset: 0 auto auto 0;
+      display: block;
+      width: min(100%, 230px);
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.14), 0 18px 42px rgba(0, 0, 0, 0.24);
+      mask-image: radial-gradient(ellipse at center, #000 68%, rgba(0, 0, 0, 0.88) 84%, transparent 100%);
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(28px) scale(0.68);
+      transform-origin: 0 0;
+      transition: opacity 0.48s var(--ease), filter 0.48s var(--ease), transform 0.58s var(--ease);
+    }
+
+    .contact-qr-crop::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background: radial-gradient(ellipse at center, transparent 58%, rgba(12, 12, 12, 0.16) 100%);
+      pointer-events: none;
+    }
+
+    .contact-card.social:hover .contact-qr-crop,
+    .contact-card.social:focus-visible .contact-qr-crop,
+    .contact-card.social.is-revealed .contact-qr-crop {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0) scale(1);
+    }
+
+    .contact-qr-redbook {
+      width: 76%;
+      transform: translate(-50%, -50%);
+      transform-origin: center;
+    }
+
+    .contact-qr-douyin {
+      width: 90%;
+      transform: translate(-50%, -50%);
+      transform-origin: center;
+    }
+
+    .contact-mail-stage {
+      display: grid;
+      min-height: 76px;
+      place-items: center start;
+    }
+
+    .mail-visual {
+      display: grid;
+      width: 76px;
+      height: 76px;
+      place-items: center;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 22px 54px rgba(0, 0, 0, 0.28), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    }
+
+    .mail-163-image {
+      position: static;
+      display: block;
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .contact-meta {
+      display: block;
+    }
+
+    .contact-icon {
+      display: inline-grid;
+      width: 54px;
+      height: 54px;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .contact-icon svg {
+      width: 27px;
+      height: 27px;
+    }
+
+    .contact-icon.redbook {
+      background: linear-gradient(135deg, rgba(255, 45, 83, 0.26), rgba(255, 255, 255, 0.09));
+    }
+
+    .contact-icon.douyin {
+      background: linear-gradient(135deg, rgba(36, 234, 240, 0.22), rgba(255, 0, 85, 0.18));
+    }
+
+    .contact-icon.mail {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .contact-name {
+      display: block;
+      margin-bottom: 8px;
+      font-size: clamp(1.1rem, 1.7vw, 1.55rem);
+      font-weight: 800;
+    }
+
+    .contact-desc {
+      display: block;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 0.92rem;
+    }
+
+    /* =========================================================
+       Ending Animation
+    ========================================================= */
+    .ending {
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at center, rgba(42, 32, 18, 0.32), transparent 46%),
+        oklch(0.09 0.003 85);
+    }
+
+    .ending::before {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      content: "";
+      background:
+        radial-gradient(circle at center, rgba(230, 194, 120, 0), transparent 0%),
+        oklch(0.09 0.003 85);
+      transition: background 4.4s var(--ease), opacity 4.4s var(--ease);
+    }
+
+    .ending::after {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      content: "";
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
+      background-size: 96px 96px;
+      mask-image: radial-gradient(circle at center, #000 0%, transparent 72%);
+      opacity: 0;
+      transition: opacity 2.6s var(--ease);
+    }
+
+    .ending.is-active::before {
+      background:
+        radial-gradient(circle at center, rgba(255, 236, 190, 0.26), transparent 18%),
+        radial-gradient(circle at center, rgba(230, 194, 120, 0.2), transparent 46%),
+        radial-gradient(circle at 50% 58%, rgba(102, 74, 33, 0.22), transparent 62%),
+        oklch(0.09 0.003 85);
+    }
+
+    .ending.is-active::after {
+      opacity: 0.52;
+    }
+
+    .ending-scene {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      width: min(620px, 84vw);
+      height: min(620px, 84vw);
+      place-items: center;
+    }
+
+    .floral-frame {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: none;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .line-flower {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: clamp(92px, var(--w, 13vw), 230px);
+      height: auto;
+      color: var(--flower-color, rgba(255, 234, 199, 0.58));
+      filter: drop-shadow(0 0 12px rgba(230, 194, 120, 0.14));
+      opacity: 0;
+      overflow: visible;
+      transform: translate(-50%, -50%) rotate(var(--r, 0deg)) scale(var(--s, 1));
+      transform-origin: center;
+    }
+
+    .line-flower [data-draw] {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: var(--stroke, 1.18);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .line-flower:not(.lily-flower) {
+      display: none;
+    }
+
+    .lily-flower [data-stamen] {
+      stroke-width: var(--stamen-stroke, 0.86);
+    }
+
+    .lily-flower [data-vein] {
+      opacity: 0.56;
+      stroke-width: var(--vein-stroke, 0.72);
+    }
+
+    .signature-bloom {
+      position: absolute;
+      left: 50%;
+      top: 43%;
+      z-index: 1;
+      width: min(820px, 106vw);
+      height: auto;
+      color: rgba(255, 236, 205, 0.44);
+      filter: blur(1px) drop-shadow(0 0 22px rgba(230, 194, 120, 0.1));
+      opacity: 0;
+      overflow: visible;
+      pointer-events: none;
+      transform: translate(-50%, -48%) scale(0.66) rotate(-3deg);
+      transform-origin: 50% 54%;
+    }
+
+    .signature-bloom-drawing {
+      transform-origin: 50% 54%;
+    }
+
+    .signature-bloom [data-draw] {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: var(--signature-bloom-stroke, 1.05);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .signature-bloom [data-petal] {
+      stroke-width: var(--signature-bloom-petal-stroke, 1.18);
+    }
+
+    .signature-bloom [data-vein] {
+      opacity: 0.42;
+      stroke-width: 0.58;
+    }
+
+    .signature-bloom [data-stamen] {
+      opacity: 0.78;
+      stroke-width: 0.78;
+    }
+
+    .signature-bloom [data-pollen] {
+      fill: currentColor;
+      opacity: 0.46;
+      stroke: none;
+    }
+
+    .ending.is-active .line-flower {
+      animation: floralAppear 2.5s var(--ease) var(--delay, 4.5s) forwards;
+    }
+
+    .ending.is-active .line-flower [data-draw] {
+      animation: floralLineDraw 2.65s var(--ease) calc(var(--delay, 4.5s) + 0.1s) forwards;
+    }
+
+    .ending.is-active .line-flower .flower-motion {
+      animation: floralSway 8s ease-in-out calc(var(--delay, 4.5s) + 2.4s) infinite alternate;
+      transform-origin: 50% 80%;
+    }
+
+    .bloom {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      transform: scale(0.76);
+      opacity: 0;
+      z-index: 0;
+    }
+
+    .ending.is-active .signature-bloom {
+      animation: signatureBloomOpen 2.85s var(--ease) 3.95s forwards, signatureBloomFloat 8.5s ease-in-out 6.9s infinite alternate;
+    }
+
+    .ending.is-active .signature-bloom [data-draw] {
+      animation: floralLineDraw 3.15s var(--ease) 4.1s forwards;
+    }
+
+    .ending.is-active .bloom {
+      animation: bloomWake 4.15s var(--ease) forwards;
+    }
+
+    .bloom-ring {
+      position: absolute;
+      width: 18%;
+      aspect-ratio: 1;
+      border: 1px solid rgba(245, 215, 156, 0.42);
+      border-radius: 50%;
+      box-shadow: 0 0 24px rgba(230, 194, 120, 0.12);
+      opacity: 0;
+    }
+
+    .ending.is-active .bloom-ring:nth-child(1) {
+      animation: ringPulse 3.65s var(--ease) 0.16s forwards;
+    }
+
+    .ending.is-active .bloom-ring:nth-child(2) {
+      animation: ringPulse 3.8s var(--ease) 0.5s forwards;
+    }
+
+    .ending.is-active .bloom-ring:nth-child(3) {
+      animation: ringPulse 3.95s var(--ease) 0.86s forwards;
+    }
+
+    .ending.is-active .bloom-ring:nth-child(4) {
+      animation: ringPulse 4.05s var(--ease) 1.2s forwards;
+    }
+
+    .bloom-rays,
+    .bloom-lattice,
+    .bloom-glint,
+    .petal {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .bloom-rays {
+      width: 92%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: repeating-conic-gradient(
+        from -7deg,
+        rgba(255, 232, 178, 0.28) 0deg,
+        rgba(255, 232, 178, 0.02) 4deg,
+        transparent 9deg,
+        transparent 22deg
+      );
+      mask-image: radial-gradient(circle, transparent 0 14%, #000 22%, transparent 66%);
+      filter: blur(0.4px);
+      transform: scale(0.35) rotate(-18deg);
+    }
+
+    .ending.is-active .bloom-rays {
+      animation: raysBloom 4.05s var(--ease) 0.25s forwards;
+    }
+
+    .bloom-lattice {
+      width: 58%;
+      aspect-ratio: 1;
+      border: 1px solid rgba(255, 238, 198, 0.16);
+      border-radius: 50%;
+      background:
+        repeating-conic-gradient(from 0deg, rgba(255, 238, 198, 0.14) 0deg 1deg, transparent 1deg 20deg),
+        radial-gradient(circle, transparent 0 36%, rgba(255, 238, 198, 0.18) 36.5%, transparent 37.5% 55%, rgba(255, 238, 198, 0.1) 55.5%, transparent 56.5%);
+      mask-image: radial-gradient(circle, transparent 0 18%, #000 28%, transparent 74%);
+      box-shadow: inset 0 0 44px rgba(255, 222, 164, 0.035), 0 0 70px rgba(230, 194, 120, 0.06);
+      transform: scale(0.48) rotate(22deg);
+    }
+
+    .ending.is-active .bloom-lattice {
+      animation: latticeSettle 4.2s var(--ease) 0.55s forwards;
+    }
+
+    .petal {
+      width: clamp(4px, 0.85vw, 7px);
+      height: clamp(4px, 0.85vw, 7px);
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255, 245, 213, 0.78);
+      box-shadow: 0 0 18px rgba(255, 232, 178, 0.42), 0 0 42px rgba(230, 194, 120, 0.18);
+      transform: rotate(calc(var(--i) * 30deg)) translateY(-5%) scale(0.2);
+      transform-origin: 50% 50%;
+    }
+
+    .petal:nth-of-type(even) {
+      width: clamp(2px, 0.55vw, 5px);
+      height: clamp(2px, 0.55vw, 5px);
+      background: rgba(255, 232, 178, 0.52);
+      transform: rotate(calc(var(--i) * 30deg + 15deg)) translateY(-4%) scale(0.2);
+    }
+
+    .ending.is-active .petal {
+      animation: particleDrift 3.55s var(--ease) calc(0.18s + var(--i) * 0.055s) forwards;
+    }
+
+    .bloom-core {
+      position: absolute;
+      width: 13%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 249, 223, 0.88), rgba(230, 194, 120, 0.26) 52%, transparent 72%);
+      filter: blur(0.2px);
+      opacity: 0;
+    }
+
+    .ending.is-active .bloom-core {
+      animation: coreGlow 4.05s var(--ease) 0.38s forwards;
+    }
+
+    .bloom-glint {
+      width: 42%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 247, 220, 0.78), transparent);
+      box-shadow: 0 0 18px rgba(255, 232, 178, 0.35);
+      transform: rotate(-18deg) scaleX(0);
+    }
+
+    .ending.is-active .bloom-glint {
+      animation: glintSweep 1.45s var(--ease) 2.25s forwards;
+    }
+
+    .final-mark {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    .ending.is-active .final-mark {
+      animation: finalReveal 1.05s var(--ease) 3.35s forwards;
+    }
+
+    .final-signature {
+      font-family: var(--font-signature);
+      font-size: clamp(4rem, 10vw, 9rem);
+      font-weight: 700;
+      line-height: 0.9;
+      text-shadow: 0 8px 30px rgba(0, 0, 0, 0.46), 0 0 16px rgba(255, 236, 205, 0.12);
+    }
+
+    .final-copy {
+      margin: 18px 0 28px;
+      color: rgba(255, 255, 255, 0.66);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: lowercase;
+      letter-spacing: 0.18em;
+    }
+
+    .final-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .final-link {
+      display: inline-grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.07);
+      transition: transform 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease);
+    }
+
+    .final-link:hover,
+    .final-link:focus-visible {
+      border-color: rgba(255, 255, 255, 0.38);
+      background: rgba(255, 255, 255, 0.12);
+      outline: none;
+      transform: translateY(-2px);
+    }
+
+    .final-link svg {
+      width: 21px;
+      height: 21px;
+    }
+
+    .ending-tagline {
+      position: absolute;
+      left: 50%;
+      bottom: clamp(30px, 5vh, 58px);
+      z-index: 3;
+      width: min(760px, calc(100% - 120px));
+      margin: 0;
+      color: rgba(255, 236, 205, 0.58);
+      font-size: clamp(0.68rem, 0.82vw, 0.86rem);
+      font-weight: 500;
+      line-height: 1.7;
+      letter-spacing: 0.08em;
+      text-align: center;
+      text-wrap: balance;
+      opacity: 0;
+      text-shadow: 0 0 18px rgba(230, 194, 120, 0.12);
+      transform: translate(-50%, 10px);
+    }
+
+    .ending.is-active .ending-tagline {
+      animation: endingTaglineReveal 1.05s var(--ease) 4.35s forwards;
+    }
+
+    .back-top {
+      position: absolute;
+      right: clamp(24px, 4vw, 56px);
+      bottom: clamp(24px, 4vw, 56px);
+      z-index: 3;
+    }
+
+    @keyframes bloomWake {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-10deg);
+      }
+      28% {
+        opacity: 1;
+      }
+      72% {
+        opacity: 0.88;
+      }
+      100% {
+        opacity: 0.24;
+        transform: scale(1.14) rotate(0deg);
+      }
+    }
+
+    @keyframes ringPulse {
+      0% {
+        width: 10%;
+        opacity: 0;
+      }
+      18% {
+        opacity: 0.82;
+      }
+      58% {
+        opacity: 0.28;
+      }
+      100% {
+        width: 118%;
+        opacity: 0;
+      }
+    }
+
+    @keyframes raysBloom {
+      0% {
+        opacity: 0;
+        transform: scale(0.35) rotate(-18deg);
+      }
+      26% {
+        opacity: 0.9;
+      }
+      72% {
+        opacity: 0.24;
+      }
+      100% {
+        opacity: 0.05;
+        transform: scale(1.08) rotate(8deg);
+      }
+    }
+
+    @keyframes latticeSettle {
+      0% {
+        opacity: 0;
+        transform: scale(0.48) rotate(22deg);
+      }
+      36% {
+        opacity: 0.64;
+      }
+      100% {
+        opacity: 0.1;
+        transform: scale(1.04) rotate(45deg);
+      }
+    }
+
+    @keyframes particleDrift {
+      0% {
+        opacity: 0;
+        transform: rotate(calc(var(--i) * 30deg)) translateY(-8%) scale(0.2);
+      }
+      30% {
+        opacity: 0.82;
+      }
+      74% {
+        opacity: 0.34;
+      }
+      100% {
+        opacity: 0.04;
+        transform: rotate(calc(var(--i) * 30deg)) translateY(-260px) scale(1);
+      }
+    }
+
+    @keyframes coreGlow {
+      0% {
+        opacity: 0;
+        transform: scale(0.4);
+      }
+      35% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0.22;
+        transform: scale(1.8);
+      }
+    }
+
+    @keyframes glintSweep {
+      0% {
+        opacity: 0;
+        transform: rotate(-18deg) scaleX(0);
+      }
+      42% {
+        opacity: 0.86;
+      }
+      100% {
+        opacity: 0;
+        transform: rotate(-18deg) scaleX(1.45);
+      }
+    }
+
+    @keyframes finalReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes endingTaglineReveal {
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+
+    @keyframes diamondPulse {
+      0%,
+      100% {
+        opacity: 0.2;
+        background-position: 0 0, 0 0, 0 0, 0 0;
+      }
+      33% {
+        opacity: 0.4;
+        background-position: 20px 10px, 10px 20px, 5px 5px, -5px -5px;
+      }
+      66% {
+        opacity: 0.3;
+        background-position: -10px 20px, 20px -10px, 10px 10px, -10px -10px;
+      }
+    }
+
+    @keyframes contactDiamondBreath {
+      0%,
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateY(18px) scale(0.72);
+      }
+      22% {
+        opacity: calc(var(--o, 0.22) + 0.26);
+      }
+      48% {
+        opacity: calc(var(--o, 0.22) + 0.42);
+        transform: translate(-50%, -50%) translateY(0) scale(1);
+      }
+      74% {
+        opacity: calc(var(--o, 0.22) + 0.24);
+        transform: translate(-50%, -50%) translateY(-12px) scale(0.92);
+      }
+    }
+
+    @keyframes signatureBloomOpen {
+      0% {
+        opacity: 0;
+        filter: blur(5px) drop-shadow(0 0 0 rgba(230, 194, 120, 0));
+        transform: translate(-50%, -45%) scale(0.62) rotate(-5deg);
+      }
+      58% {
+        opacity: 0.34;
+      }
+      100% {
+        opacity: 0.4;
+        filter: blur(0) drop-shadow(0 0 24px rgba(230, 194, 120, 0.16));
+        transform: translate(-50%, -50%) scale(1) rotate(-1.4deg);
+      }
+    }
+
+    @keyframes signatureBloomFloat {
+      0% {
+        opacity: 0.4;
+        transform: translate(-50%, -50%) scale(1) rotate(-1.4deg);
+      }
+      100% {
+        opacity: 0.46;
+        transform: translate(-50%, -52%) scale(1.018) rotate(0.8deg);
+      }
+    }
+
+    @keyframes floralAppear {
+      0% {
+        opacity: 0;
+        filter: blur(5px) drop-shadow(0 0 0 rgba(230, 194, 120, 0));
+        transform: translate(-50%, -46%) rotate(var(--r, 0deg)) scale(calc(var(--s, 1) * 0.88));
+      }
+      100% {
+        opacity: var(--flower-opacity, 0.78);
+        filter: blur(0) drop-shadow(0 0 16px rgba(230, 194, 120, 0.16));
+        transform: translate(-50%, -50%) rotate(var(--r, 0deg)) scale(var(--s, 1));
+      }
+    }
+
+    @keyframes floralLineDraw {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes floralSway {
+      0% {
+        transform: translate3d(0, 0, 0) rotate(-0.8deg);
+      }
+      100% {
+        transform: translate3d(0, -8px, 0) rotate(1deg);
+      }
+    }
+
+    /* =========================================================
+       Responsive
+    ========================================================= */
+    @media (max-width: 1024px) {
+      .panel {
+        padding: clamp(24px, 5vw, 48px);
+      }
+
+      .carousel-shell {
+        min-height: min(690px, 70svh);
+      }
+
+      .carousel-card {
+        width: min(760px, 70vw);
+      }
+
+      .contact-grid {
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .site-scroll {
+        scroll-snap-type: y proximity;
+      }
+
+      .panel {
+        padding: 24px;
+      }
+
+      .home {
+        align-items: center;
+      }
+
+      .home-inner {
+        padding-top: 0;
+        min-height: 62svh;
+      }
+
+      .home-title {
+        max-width: 100%;
+        min-height: 42svh;
+      }
+
+      .home-title .title-main {
+        font-size: clamp(3.9rem, 15.6vw, 7.4rem);
+      }
+
+      .home-title .title-sub {
+        font-size: clamp(2.25rem, 9.4vw, 4.5rem);
+      }
+
+      .scroll-hint {
+        bottom: 28px;
+      }
+
+      .portfolio {
+        gap: 18px;
+      }
+
+      .portfolio-title {
+        font-size: clamp(2.4rem, 11vw, 4.1rem);
+      }
+
+      .carousel-shell {
+        min-height: 62svh;
+      }
+
+      .coverflow {
+        width: 84vw;
+        height: 52svh;
+      }
+
+      .carousel-card {
+        width: 82vw;
+        height: 46svh;
+      }
+
+      .carousel-btn {
+        top: auto;
+        bottom: 2px;
+      }
+
+      .carousel-btn:hover,
+      .carousel-btn:focus-visible {
+        transform: translateY(-2px);
+      }
+
+      .carousel-btn.prev {
+        left: 14vw;
+      }
+
+      .carousel-btn.next {
+        right: 14vw;
+      }
+
+      .card-caption {
+        margin-top: 12px;
+      }
+
+      .placeholder-label {
+        font-size: 1rem;
+      }
+
+      .gallery {
+        padding: 0;
+      }
+
+      .gallery-layout {
+        min-height: 100svh;
+      }
+
+      .gallery-sidebar {
+        min-height: 100svh;
+        padding: 24px;
+      }
+
+      .gallery-sidebar > * {
+        min-width: 0;
+      }
+
+      .gallery-controls {
+        width: min(230px, 60vw);
+        gap: 12px;
+      }
+
+      .category-slider {
+        display: block;
+      }
+
+      .category-nav {
+        width: 100%;
+        max-width: 100%;
+        max-height: 330px;
+        gap: 12px;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+      }
+
+      .category-nav::-webkit-scrollbar {
+        display: none;
+      }
+
+      .category-btn {
+        min-width: 0;
+        padding: 0;
+        white-space: nowrap;
+      }
+
+      .category-btn.category-depth-0 {
+        font-size: clamp(1.08rem, 4.45vw, 1.42rem);
+      }
+
+      .category-btn.category-depth-1 {
+        font-size: clamp(0.88rem, 3.55vw, 1.12rem);
+      }
+
+      .category-btn.category-depth-2 {
+        font-size: clamp(0.72rem, 2.86vw, 0.9rem);
+      }
+
+      .category-btn.category-depth-3 {
+        font-size: clamp(0.62rem, 2.36vw, 0.74rem);
+      }
+
+      .category-btn.is-active {
+        transform: translateX(8px) scale(1.02);
+      }
+
+      .identity-block {
+        display: flex;
+        width: 100%;
+        min-width: 0;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .signature {
+        font-size: clamp(0.92rem, 4.05vw, 1.34rem);
+      }
+
+      .next-photo {
+        flex: 0 0 auto;
+        padding: 7px 10px;
+      }
+
+      .gallery-stage {
+        min-height: 100svh;
+      }
+
+      .gallery-photo {
+        min-height: 100svh;
+      }
+
+      .gallery-photo-label {
+        max-width: 100%;
+        padding: 0;
+        font-size: clamp(1.08rem, 4.45vw, 1.58rem);
+        overflow-wrap: normal;
+        word-break: keep-all;
+      }
+
+      .gallery-photo-subtitle {
+        margin: 20px;
+      }
+
+      .gallery-counter {
+        right: 24px;
+        bottom: 88px;
+      }
+
+      .gallery-pager {
+        right: 16px;
+      }
+
+      .gallery-pager-track {
+        width: 24px;
+        height: 132px;
+      }
+
+      .gallery-page-jump {
+        width: 24px;
+        height: 30px;
+        margin-top: 12px;
+      }
+
+      .gallery-page-jump.prev {
+        margin-bottom: 12px;
+      }
+
+      .contact-title {
+        font-size: clamp(3rem, 15vw, 5.7rem);
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-card {
+        min-height: 220px;
+      }
+
+      .contact-card.social:hover,
+      .contact-card.social:focus-visible,
+      .contact-card.social.is-revealed {
+        min-height: 338px;
+        transform: translateY(-8px) scale(1.015);
+      }
+
+      .contact-social-stage {
+        min-height: 76px;
+      }
+
+      .contact-card.social:hover .contact-social-stage,
+      .contact-card.social:focus-visible .contact-social-stage,
+      .contact-card.social.is-revealed .contact-social-stage {
+        min-height: 210px;
+      }
+
+      .contact-qr-crop {
+        width: min(100%, 210px);
+      }
+
+      .ending-scene {
+        width: min(520px, 94vw);
+        height: min(520px, 94vw);
+      }
+
+      .signature-bloom {
+        top: 41%;
+        width: min(660px, 124vw);
+      }
+
+      .line-flower {
+        width: clamp(78px, var(--w, 26vw), 168px);
+        opacity: 0;
+      }
+
+      .ending-tagline {
+        bottom: 82px;
+        width: min(620px, calc(100% - 48px));
+        font-size: 0.68rem;
+        letter-spacing: 0.05em;
+      }
+
+      .back-top {
+        right: 22px;
+        bottom: 22px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html,
+      .site-scroll {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Global loading animation start -->
+  <div class="preloader" id="preloader" aria-live="polite" aria-label="页面加载中">
+    <div class="loader-inner">
+      <div class="loader-copy">photography & creativity</div>
+      <div class="loader-track" aria-hidden="true">
+        <div class="loader-fill"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Global loading animation end -->
+
+  <main class="site-scroll" id="siteScroll">
+    <!-- Section 1: Home start -->
+    <section class="panel home" id="home" aria-label="首页">
+      <div class="home-inner">
+        <p class="home-kicker">ovekirito portfolio</p>
+        <h1 class="home-title">
+          <span class="title-main">photography</span>
+          <span class="title-sub">&amp; creativity</span>
+        </h1>
+      </div>
+      <div class="scroll-hint" aria-hidden="true">
+        <span>Scroll</span>
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5v14"></path>
+          <path d="m6 13 6 6 6-6"></path>
+        </svg>
+      </div>
+    </section>
+    <!-- Section 1: Home end -->
+
+    <!-- Section 2: Portfolio Slider start -->
+    <section class="panel portfolio" id="portfolio" aria-labelledby="portfolioTitle">
+      <div class="portfolio-head">
+        <div class="section-eyebrow">02 / Portfolio</div>
+        <h2 class="portfolio-title" id="portfolioTitle">Selected Works</h2>
+      </div>
+
+      <div class="carousel-shell">
+        <button class="icon-button carousel-btn prev" type="button" id="prevSlide" aria-label="上一张作品">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+        </button>
+
+        <div class="coverflow" id="portfolioCarousel" role="listbox" tabindex="0" aria-label="作品轮播，支持左右拖拽切换">
+          <article class="carousel-card" role="option" aria-label="风景，占位图，横向构图">
+            <div class="photo-matte">
+              <!-- TODO: 替换为真实照片 - scenery / 风景 / 横向 16:9 -->
+              <div class="placeholder-photo horizontal ph-scenery" role="img" aria-label="scenery placeholder horizontal">
+                <span class="placeholder-label">风景</span>
+                <span class="orientation-badge">16:9</span>
+              </div>
+            </div>
+            <p class="card-caption">scenery</p>
+          </article>
+
+          <article class="carousel-card" role="option" aria-label="展会，占位图，竖向构图">
+            <div class="photo-matte">
+              <!-- TODO: 替换为真实照片 - exhibition / 展会 / 竖向 2:3 -->
+              <div class="placeholder-photo vertical ph-exhibition" role="img" aria-label="exhibition placeholder vertical">
+                <span class="placeholder-label">展会</span>
+                <span class="orientation-badge">2:3</span>
+              </div>
+            </div>
+            <p class="card-caption">exhibition</p>
+          </article>
+
+          <article class="carousel-card" role="option" aria-label="动物，占位图，横向构图">
+            <div class="photo-matte">
+              <!-- TODO: 替换为真实照片 - animal / 动物 / 横向 3:2 -->
+              <div class="placeholder-photo horizontal ph-animal" role="img" aria-label="animal placeholder horizontal">
+                <span class="placeholder-label">动物</span>
+                <span class="orientation-badge">3:2</span>
+              </div>
+            </div>
+            <p class="card-caption">animal</p>
+          </article>
+
+          <article class="carousel-card" role="option" aria-label="人像，占位图，竖向构图">
+            <div class="photo-matte">
+              <!-- TODO: 替换为真实照片 - portrait / 人像 / 竖向 4:5 -->
+              <div class="placeholder-photo vertical ph-portrait" role="img" aria-label="portrait placeholder vertical">
+                <span class="placeholder-label">人像</span>
+                <span class="orientation-badge">4:5</span>
+              </div>
+            </div>
+            <p class="card-caption">portrait</p>
+          </article>
+
+          <article class="carousel-card" role="option" aria-label="风景延展，占位图，横向构图">
+            <div class="photo-matte">
+              <!-- TODO: 替换为真实照片 - scenery extension / 风景延展 / 横向 3:2 -->
+              <div class="placeholder-photo horizontal ph-scenery" role="img" aria-label="scenery extension placeholder horizontal">
+                <span class="placeholder-label">风景</span>
+                <span class="orientation-badge">3:2</span>
+              </div>
+            </div>
+            <p class="card-caption">scenery extension</p>
+          </article>
+
+          <article class="carousel-card" role="option" aria-label="展会延展，占位图，竖向构图">
+            <div class="photo-matte">
+              <!-- TODO: 替换为真实照片 - exhibition extension / 展会延展 / 竖向 4:5 -->
+              <div class="placeholder-photo vertical ph-exhibition" role="img" aria-label="exhibition extension placeholder vertical">
+                <span class="placeholder-label">展会</span>
+                <span class="orientation-badge">4:5</span>
+              </div>
+            </div>
+            <p class="card-caption">exhibition extension</p>
+          </article>
+
+          <article class="carousel-card" role="option" aria-label="动物延展，占位图，横向构图">
+            <div class="photo-matte">
+              <!-- TODO: 替换为真实照片 - animal extension / 动物延展 / 横向 16:9 -->
+              <div class="placeholder-photo horizontal ph-animal" role="img" aria-label="animal extension placeholder horizontal">
+                <span class="placeholder-label">动物</span>
+                <span class="orientation-badge">16:9</span>
+              </div>
+            </div>
+            <p class="card-caption">animal extension</p>
+          </article>
+
+          <article class="carousel-card" role="option" aria-label="人像延展，占位图，竖向构图">
+            <div class="photo-matte">
+              <!-- TODO: 替换为真实照片 - portrait extension / 人像延展 / 竖向 2:3 -->
+              <div class="placeholder-photo vertical ph-portrait" role="img" aria-label="portrait extension placeholder vertical">
+                <span class="placeholder-label">人像</span>
+                <span class="orientation-badge">2:3</span>
+              </div>
+            </div>
+            <p class="card-caption">portrait extension</p>
+          </article>
+
+          <article class="carousel-card" role="option" aria-label="风景细节，占位图，横向构图">
+            <div class="photo-matte">
+              <!-- TODO: 替换为真实照片 - scenery detail / 风景细节 / 横向 16:9 -->
+              <div class="placeholder-photo horizontal ph-scenery" role="img" aria-label="scenery detail placeholder horizontal">
+                <span class="placeholder-label">风景</span>
+                <span class="orientation-badge">16:9</span>
+              </div>
+            </div>
+            <p class="card-caption">scenery detail</p>
+          </article>
+
+          <article class="carousel-card" role="option" aria-label="展会细节，占位图，横向构图">
+            <div class="photo-matte">
+              <!-- TODO: 替换为真实照片 - exhibition detail / 展会细节 / 横向 3:2 -->
+              <div class="placeholder-photo horizontal ph-exhibition" role="img" aria-label="exhibition detail placeholder horizontal">
+                <span class="placeholder-label">展会</span>
+                <span class="orientation-badge">3:2</span>
+              </div>
+            </div>
+            <p class="card-caption">exhibition detail</p>
+          </article>
+        </div>
+
+        <button class="icon-button carousel-btn next" type="button" id="nextSlide" aria-label="下一张作品">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </button>
+      </div>
+
+      <ul class="carousel-dots" id="carouselDots" aria-label="作品轮播分页"></ul>
+    </section>
+    <!-- Section 2: Portfolio Slider end -->
+
+    <!-- Section 3: Category Gallery start -->
+    <section class="panel gallery" id="gallery" aria-labelledby="galleryTitle">
+      <div class="gallery-layout">
+        <aside class="gallery-sidebar" aria-label="分类导航">
+          <div class="gallery-controls">
+            <div class="section-eyebrow">03 / Gallery</div>
+            <h2 class="sr-only" id="galleryTitle">Category Gallery</h2>
+            <div class="category-slider" aria-label="循环分类滑块">
+              <nav class="category-nav" aria-label="作品分类">
+                <button class="category-btn is-active" type="button" data-category="exhibition">exhibition</button>
+                <button class="category-btn" type="button" data-category="animal">animal</button>
+                <button class="category-btn" type="button" data-category="scenery">scenery</button>
+                <button class="category-btn" type="button" data-category="portrait">portrait</button>
+                <button class="category-btn" type="button" data-category="mix">mix</button>
+              </nav>
+            </div>
+          </div>
+
+          <div class="identity-block">
+            <div class="signature">ovekirito</div>
+            <button class="next-photo" type="button" id="nextGalleryPhoto">
+              <span>Next</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h14"></path>
+                <path d="m13 6 6 6-6 6"></path>
+              </svg>
+            </button>
+          </div>
+        </aside>
+
+        <div class="gallery-stage" id="galleryStage">
+          <!-- Real category photos are loaded from the matching local folders. -->
+          <div class="gallery-photo" id="galleryPhoto" role="img" aria-label="exhibition photo 1">
+            <img class="gallery-photo-image" id="galleryImage" src="exhibition/1.jpg" alt="exhibition photo 1">
+            <span class="gallery-photo-label" id="galleryLabel">exhibition</span>
+            <span class="gallery-photo-subtitle" id="gallerySubtitle">photo 1</span>
+          </div>
+          <div class="gallery-counter" id="galleryCounter">1 / 4</div>
+          <div class="gallery-pager" aria-label="图片竖向导航滑块">
+            <button class="gallery-page-jump prev" type="button" id="galleryPrevPanel" aria-label="进入上一页">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 14l5-5 5 5"></path>
+                <path d="M7 19l5-5 5 5"></path>
+              </svg>
+            </button>
+            <button class="gallery-pager-track" type="button" id="galleryPagerTrack" aria-label="按位置切换图片">
+              <span class="gallery-pager-fill" id="galleryPagerFill"></span>
+              <span class="gallery-pager-dot" id="galleryPagerDot"></span>
+            </button>
+            <button class="gallery-page-jump" type="button" id="galleryNextPanel" aria-label="进入下一页">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 10l5 5 5-5"></path>
+                <path d="M7 5l5 5 5-5"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Section 3: Category Gallery end -->
+
+    <!-- Section 4: Contact / Collaboration start -->
+    <section class="panel contact" id="contact" aria-labelledby="contactTitle">
+      <div class="contact-diamonds" aria-hidden="true">
+        <span class="contact-diamond is-outline" style="--x: 6%; --y: 16%; --w: 28px; --o: 0.18; --duration: 11s; --delay: -2s;"></span>
+        <span class="contact-diamond is-soft" style="--x: 13%; --y: 43%; --w: 16px; --o: 0.15; --duration: 9s; --delay: -5s;"></span>
+        <span class="contact-diamond" style="--x: 8%; --y: 79%; --w: 40px; --o: 0.16; --duration: 13s; --delay: -7s;"></span>
+        <span class="contact-diamond is-outline" style="--x: 24%; --y: 17%; --w: 20px; --o: 0.18; --duration: 10.5s; --delay: -3.4s;"></span>
+        <span class="contact-diamond is-soft" style="--x: 23%; --y: 90%; --w: 24px; --o: 0.13; --duration: 12s; --delay: -8.1s;"></span>
+        <span class="contact-diamond" style="--x: 43%; --y: 10%; --w: 28px; --o: 0.17; --duration: 14s; --delay: -6s;"></span>
+        <span class="contact-diamond is-outline" style="--x: 55%; --y: 92%; --w: 18px; --o: 0.14; --duration: 9.5s; --delay: -1.2s;"></span>
+        <span class="contact-diamond is-soft" style="--x: 66%; --y: 12%; --w: 42px; --o: 0.12; --duration: 15s; --delay: -9s; --blur: 0.3px;"></span>
+        <span class="contact-diamond" style="--x: 78%; --y: 89%; --w: 28px; --o: 0.16; --duration: 12.5s; --delay: -4.8s;"></span>
+        <span class="contact-diamond is-outline" style="--x: 92%; --y: 18%; --w: 17px; --o: 0.2; --duration: 8.5s; --delay: -6.7s;"></span>
+        <span class="contact-diamond is-soft" style="--x: 88%; --y: 47%; --w: 34px; --o: 0.14; --duration: 13.5s; --delay: -2.8s;"></span>
+        <span class="contact-diamond is-outline" style="--x: 94%; --y: 76%; --w: 24px; --o: 0.18; --duration: 10s; --delay: -7.5s;"></span>
+      </div>
+
+      <div class="contact-inner">
+        <div class="section-eyebrow">04 / Contact</div>
+        <h2 class="contact-title" id="contactTitle">Let's Connect</h2>
+
+        <div class="contact-grid" aria-label="联系方式">
+          <a class="contact-card social" href="qrcode/Xiao2.png" target="_blank" rel="noopener" aria-label="小红书二维码">
+            <span class="contact-social-stage" aria-hidden="true">
+              <span class="contact-platform-badge redbook">
+                <svg viewBox="0 0 28 28">
+                  <rect x="5" y="5" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+                  <path d="M9 12h10M9 16h6M17 16h2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+                </svg>
+              </span>
+              <span class="contact-qr-crop">
+                <img class="contact-qr contact-qr-redbook" src="qrcode/Xiao2.png" alt="" loading="lazy">
+              </span>
+            </span>
+            <span class="contact-meta">
+              <span class="contact-name">小红书</span>
+              <span class="contact-desc">小红书号：49345749582</span>
+            </span>
+          </a>
+
+          <a class="contact-card social" href="qrcode/dy1.png" target="_blank" rel="noopener" aria-label="抖音二维码">
+            <span class="contact-social-stage" aria-hidden="true">
+              <span class="contact-platform-badge douyin">
+                <svg viewBox="0 0 28 28">
+                  <path d="M16 6v11.2a4.2 4.2 0 1 1-3.3-4.1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.9"></path>
+                  <path d="M16 7c1.1 3.2 3 5 6 5.4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.9"></path>
+                </svg>
+              </span>
+              <span class="contact-qr-crop">
+                <img class="contact-qr contact-qr-douyin" src="qrcode/dy1.png" alt="" loading="lazy">
+              </span>
+            </span>
+            <span class="contact-meta">
+              <span class="contact-name">抖音</span>
+              <span class="contact-desc">抖音号：dywglgpmudr3</span>
+            </span>
+          </a>
+
+          <a class="contact-card" href="mailto:chyifan06@163.com" aria-label="邮箱 chyifan06@163.com">
+            <span class="contact-mail-stage" aria-hidden="true">
+              <span class="mail-visual">
+                <img class="mail-163-image" src="qrcode/163邮箱图标.png" alt="">
+              </span>
+            </span>
+            <span>
+              <span class="contact-name">邮箱</span>
+              <span class="contact-desc">chyifan06@163.com</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- Section 4: Contact / Collaboration end -->
+
+    <!-- Ending Animation start -->
+    <section class="panel ending" id="ending" aria-label="结束画面">
+      <div class="floral-frame" aria-hidden="true">
+        <svg class="line-flower lily-flower" style="--x: 8%; --y: 22%; --r: -15deg; --s: 0.88; --w: 13vw; --delay: 4.45s; --flower-color: rgba(218, 231, 255, 0.6);" viewBox="0 0 160 220">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M79 214 C69 179 76 148 84 116 C88 96 87 78 80 62"></path>
+            <path data-draw pathLength="1" d="M75 166 C54 145 38 136 18 131 C39 158 57 173 75 166Z"></path>
+            <path data-draw data-vein pathLength="1" d="M75 166 C57 153 41 142 22 132"></path>
+            <path data-draw pathLength="1" d="M82 180 C99 158 118 148 143 147 C121 171 101 185 82 180Z"></path>
+            <path data-draw data-vein pathLength="1" d="M82 180 C101 168 120 157 140 148"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M80 89 C55 73 31 63 10 66 M82 89 C108 72 133 63 153 66 M79 92 C53 99 31 113 18 131 M82 92 C109 100 131 114 145 129"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51 M80 98 C74 82 72 68 72 54 M80 98 C86 83 90 69 93 56"></path>
+            <path data-draw data-stamen pathLength="1" d="M73 43 C77 37 83 38 86 43 C83 49 77 49 73 43Z M54 54 C59 49 65 52 66 58 C61 62 56 60 54 54Z M101 52 C105 46 111 48 112 54 C108 60 102 58 101 52Z M69 55 C73 50 78 52 79 58 C75 63 70 61 69 55Z M90 57 C94 51 100 53 101 59 C97 64 91 62 90 57Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower lily-flower" style="--x: 20%; --y: 82%; --r: 25deg; --s: 0.68; --w: 12vw; --delay: 4.9s; --flower-opacity: 0.58;" viewBox="0 0 160 220">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M79 214 C69 179 76 148 84 116 C88 96 87 78 80 62"></path>
+            <path data-draw pathLength="1" d="M75 166 C54 145 38 136 18 131 C39 158 57 173 75 166Z"></path>
+            <path data-draw data-vein pathLength="1" d="M75 166 C57 153 41 142 22 132"></path>
+            <path data-draw pathLength="1" d="M82 180 C99 158 118 148 143 147 C121 171 101 185 82 180Z"></path>
+            <path data-draw data-vein pathLength="1" d="M82 180 C101 168 120 157 140 148"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M80 89 C55 73 31 63 10 66 M82 89 C108 72 133 63 153 66 M79 92 C53 99 31 113 18 131 M82 92 C109 100 131 114 145 129"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51 M80 98 C74 82 72 68 72 54 M80 98 C86 83 90 69 93 56"></path>
+            <path data-draw data-stamen pathLength="1" d="M73 43 C77 37 83 38 86 43 C83 49 77 49 73 43Z M54 54 C59 49 65 52 66 58 C61 62 56 60 54 54Z M101 52 C105 46 111 48 112 54 C108 60 102 58 101 52Z M69 55 C73 50 78 52 79 58 C75 63 70 61 69 55Z M90 57 C94 51 100 53 101 59 C97 64 91 62 90 57Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower lily-flower" style="--x: 52%; --y: 7%; --r: 84deg; --s: 0.56; --w: 11vw; --delay: 5.45s; --flower-color: rgba(255, 236, 205, 0.48);" viewBox="0 0 160 220">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M79 214 C69 179 76 148 84 116 C88 96 87 78 80 62"></path>
+            <path data-draw pathLength="1" d="M75 166 C54 145 38 136 18 131 C39 158 57 173 75 166Z"></path>
+            <path data-draw data-vein pathLength="1" d="M75 166 C57 153 41 142 22 132"></path>
+            <path data-draw pathLength="1" d="M82 180 C99 158 118 148 143 147 C121 171 101 185 82 180Z"></path>
+            <path data-draw data-vein pathLength="1" d="M82 180 C101 168 120 157 140 148"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M80 89 C55 73 31 63 10 66 M82 89 C108 72 133 63 153 66 M79 92 C53 99 31 113 18 131 M82 92 C109 100 131 114 145 129"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51 M80 98 C74 82 72 68 72 54 M80 98 C86 83 90 69 93 56"></path>
+            <path data-draw data-stamen pathLength="1" d="M73 43 C77 37 83 38 86 43 C83 49 77 49 73 43Z M54 54 C59 49 65 52 66 58 C61 62 56 60 54 54Z M101 52 C105 46 111 48 112 54 C108 60 102 58 101 52Z M69 55 C73 50 78 52 79 58 C75 63 70 61 69 55Z M90 57 C94 51 100 53 101 59 C97 64 91 62 90 57Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower lily-flower" style="--x: 91%; --y: 23%; --r: 15deg; --s: 0.88; --w: 13vw; --delay: 4.65s; --flower-color: rgba(218, 231, 255, 0.56);" viewBox="0 0 160 220">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M79 214 C69 179 76 148 84 116 C88 96 87 78 80 62"></path>
+            <path data-draw pathLength="1" d="M75 166 C54 145 38 136 18 131 C39 158 57 173 75 166Z"></path>
+            <path data-draw data-vein pathLength="1" d="M75 166 C57 153 41 142 22 132"></path>
+            <path data-draw pathLength="1" d="M82 180 C99 158 118 148 143 147 C121 171 101 185 82 180Z"></path>
+            <path data-draw data-vein pathLength="1" d="M82 180 C101 168 120 157 140 148"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M80 89 C55 73 31 63 10 66 M82 89 C108 72 133 63 153 66 M79 92 C53 99 31 113 18 131 M82 92 C109 100 131 114 145 129"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51 M80 98 C74 82 72 68 72 54 M80 98 C86 83 90 69 93 56"></path>
+            <path data-draw data-stamen pathLength="1" d="M73 43 C77 37 83 38 86 43 C83 49 77 49 73 43Z M54 54 C59 49 65 52 66 58 C61 62 56 60 54 54Z M101 52 C105 46 111 48 112 54 C108 60 102 58 101 52Z M69 55 C73 50 78 52 79 58 C75 63 70 61 69 55Z M90 57 C94 51 100 53 101 59 C97 64 91 62 90 57Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower lily-flower" style="--x: 84%; --y: 79%; --r: -24deg; --s: 0.98; --w: 14vw; --delay: 5.15s; --flower-opacity: 0.62;" viewBox="0 0 160 220">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M79 214 C69 179 76 148 84 116 C88 96 87 78 80 62"></path>
+            <path data-draw pathLength="1" d="M75 166 C54 145 38 136 18 131 C39 158 57 173 75 166Z"></path>
+            <path data-draw data-vein pathLength="1" d="M75 166 C57 153 41 142 22 132"></path>
+            <path data-draw pathLength="1" d="M82 180 C99 158 118 148 143 147 C121 171 101 185 82 180Z"></path>
+            <path data-draw data-vein pathLength="1" d="M82 180 C101 168 120 157 140 148"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M80 89 C55 73 31 63 10 66 M82 89 C108 72 133 63 153 66 M79 92 C53 99 31 113 18 131 M82 92 C109 100 131 114 145 129"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51 M80 98 C74 82 72 68 72 54 M80 98 C86 83 90 69 93 56"></path>
+            <path data-draw data-stamen pathLength="1" d="M73 43 C77 37 83 38 86 43 C83 49 77 49 73 43Z M54 54 C59 49 65 52 66 58 C61 62 56 60 54 54Z M101 52 C105 46 111 48 112 54 C108 60 102 58 101 52Z M69 55 C73 50 78 52 79 58 C75 63 70 61 69 55Z M90 57 C94 51 100 53 101 59 C97 64 91 62 90 57Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower lily-flower" style="--x: 7%; --y: 64%; --r: 12deg; --s: 0.58; --w: 10vw; --delay: 5.35s; --flower-opacity: 0.48;" viewBox="0 0 160 220">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M79 214 C69 179 76 148 84 116 C88 96 87 78 80 62"></path>
+            <path data-draw pathLength="1" d="M75 166 C54 145 38 136 18 131 C39 158 57 173 75 166Z"></path>
+            <path data-draw data-vein pathLength="1" d="M75 166 C57 153 41 142 22 132"></path>
+            <path data-draw pathLength="1" d="M82 180 C99 158 118 148 143 147 C121 171 101 185 82 180Z"></path>
+            <path data-draw data-vein pathLength="1" d="M82 180 C101 168 120 157 140 148"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M80 89 C55 73 31 63 10 66 M82 89 C108 72 133 63 153 66 M79 92 C53 99 31 113 18 131 M82 92 C109 100 131 114 145 129"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51 M80 98 C74 82 72 68 72 54 M80 98 C86 83 90 69 93 56"></path>
+            <path data-draw data-stamen pathLength="1" d="M73 43 C77 37 83 38 86 43 C83 49 77 49 73 43Z M54 54 C59 49 65 52 66 58 C61 62 56 60 54 54Z M101 52 C105 46 111 48 112 54 C108 60 102 58 101 52Z M69 55 C73 50 78 52 79 58 C75 63 70 61 69 55Z M90 57 C94 51 100 53 101 59 C97 64 91 62 90 57Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower lily-flower" style="--x: 3%; --y: 47%; --r: -7deg; --s: 0.74; --w: 11vw; --delay: 5.72s; --flower-opacity: 0.5;" viewBox="0 0 160 280">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M80 274 C62 222 73 176 84 128 C90 103 88 78 80 62"></path>
+            <path data-draw pathLength="1" d="M73 213 C48 190 30 179 6 176 C29 206 53 221 73 213Z"></path>
+            <path data-draw data-vein pathLength="1" d="M73 213 C51 199 30 186 8 177"></path>
+            <path data-draw pathLength="1" d="M85 232 C103 203 128 190 157 191 C131 221 106 239 85 232Z"></path>
+            <path data-draw data-vein pathLength="1" d="M85 232 C107 215 130 202 155 192"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M80 89 C55 73 31 63 10 66 M82 89 C108 72 133 63 153 66 M79 92 C53 99 31 113 18 131 M82 92 C109 100 131 114 145 129"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51 M80 98 C74 82 72 68 72 54 M80 98 C86 83 90 69 93 56"></path>
+            <path data-draw data-stamen pathLength="1" d="M73 43 C77 37 83 38 86 43 C83 49 77 49 73 43Z M54 54 C59 49 65 52 66 58 C61 62 56 60 54 54Z M101 52 C105 46 111 48 112 54 C108 60 102 58 101 52Z M69 55 C73 50 78 52 79 58 C75 63 70 61 69 55Z M90 57 C94 51 100 53 101 59 C97 64 91 62 90 57Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower lily-flower" style="--x: 97%; --y: 55%; --r: 9deg; --s: 0.72; --w: 11vw; --delay: 5.9s; --flower-color: rgba(218, 231, 255, 0.48);" viewBox="0 0 160 280">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M80 274 C96 221 88 177 78 128 C73 103 74 78 82 62"></path>
+            <path data-draw pathLength="1" d="M87 215 C113 191 132 181 156 178 C132 207 108 223 87 215Z"></path>
+            <path data-draw data-vein pathLength="1" d="M87 215 C109 200 131 187 154 179"></path>
+            <path data-draw pathLength="1" d="M77 232 C59 205 36 192 5 194 C32 222 55 239 77 232Z"></path>
+            <path data-draw data-vein pathLength="1" d="M77 232 C55 215 32 204 7 195"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M80 89 C55 73 31 63 10 66 M82 89 C108 72 133 63 153 66 M79 92 C53 99 31 113 18 131 M82 92 C109 100 131 114 145 129"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51 M80 98 C74 82 72 68 72 54 M80 98 C86 83 90 69 93 56"></path>
+            <path data-draw data-stamen pathLength="1" d="M73 43 C77 37 83 38 86 43 C83 49 77 49 73 43Z M54 54 C59 49 65 52 66 58 C61 62 56 60 54 54Z M101 52 C105 46 111 48 112 54 C108 60 102 58 101 52Z M69 55 C73 50 78 52 79 58 C75 63 70 61 69 55Z M90 57 C94 51 100 53 101 59 C97 64 91 62 90 57Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower lily-flower" style="--x: 29%; --y: 12%; --r: -70deg; --s: 0.48; --w: 9vw; --delay: 6.18s; --flower-color: rgba(255, 236, 205, 0.42);" viewBox="0 0 160 170">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M78 164 C74 142 78 124 84 110 C90 95 88 78 80 62"></path>
+            <path data-draw pathLength="1" d="M75 144 C59 132 45 128 30 130 C45 146 62 153 75 144Z"></path>
+            <path data-draw pathLength="1" d="M86 151 C99 137 113 132 130 136 C115 151 98 158 86 151Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M80 89 C55 73 31 63 10 66 M82 89 C108 72 133 63 153 66"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower lily-flower" style="--x: 69%; --y: 93%; --r: -42deg; --s: 0.5; --w: 9vw; --delay: 6.32s; --flower-opacity: 0.44;" viewBox="0 0 160 170">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M78 164 C74 142 78 124 84 110 C90 95 88 78 80 62"></path>
+            <path data-draw pathLength="1" d="M75 144 C59 132 45 128 30 130 C45 146 62 153 75 144Z"></path>
+            <path data-draw pathLength="1" d="M86 151 C99 137 113 132 130 136 C115 151 98 158 86 151Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M79 92 C53 99 31 113 18 131 M82 92 C109 100 131 114 145 129"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower lily-flower" style="--x: 46%; --y: 96%; --r: 38deg; --s: 0.42; --w: 8vw; --delay: 6.55s; --flower-color: rgba(218, 231, 255, 0.38);" viewBox="0 0 160 170">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M78 164 C74 142 78 124 84 110 C90 95 88 78 80 62"></path>
+            <path data-draw pathLength="1" d="M75 144 C59 132 45 128 30 130 C45 146 62 153 75 144Z"></path>
+            <path data-draw pathLength="1" d="M86 151 C99 137 113 132 130 136 C115 151 98 158 86 151Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M80 89 C55 73 31 63 10 66 M82 89 C108 72 133 63 153 66"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower lily-flower" style="--x: 95%; --y: 8%; --r: -35deg; --s: 0.46; --w: 8vw; --delay: 6.05s; --flower-opacity: 0.42;" viewBox="0 0 160 170">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M78 164 C74 142 78 124 84 110 C90 95 88 78 80 62"></path>
+            <path data-draw pathLength="1" d="M75 144 C59 132 45 128 30 130 C45 146 62 153 75 144Z"></path>
+            <path data-draw pathLength="1" d="M86 151 C99 137 113 132 130 136 C115 151 98 158 86 151Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 88 C66 55 72 20 86 10 C106 28 104 63 80 88Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 89 C49 55 24 45 8 66 C24 86 51 96 80 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 89 C113 52 141 45 154 66 C138 86 109 96 82 89Z"></path>
+            <path data-draw data-petal pathLength="1" d="M79 92 C42 86 14 103 17 132 C48 134 70 117 79 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M82 92 C118 84 148 101 146 129 C115 135 91 117 82 92Z"></path>
+            <path data-draw data-petal pathLength="1" d="M80 94 C96 113 98 140 74 151 C58 136 62 110 80 94Z"></path>
+            <path data-draw data-vein pathLength="1" d="M80 88 C79 61 81 32 86 13 M79 92 C53 99 31 113 18 131 M82 92 C109 100 131 114 145 129"></path>
+            <path data-draw data-stamen pathLength="1" d="M80 98 C77 78 77 59 77 42 M80 98 C69 82 63 68 58 53 M80 98 C88 80 96 65 105 51"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower" style="--x: 7%; --y: 20%; --r: -16deg; --s: 0.92; --w: 12vw; --delay: 4.45s; --flower-color: rgba(210, 229, 255, 0.56);" viewBox="0 0 120 160">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M58 154 C55 127 58 104 68 82 C77 63 78 42 70 21"></path>
+            <path data-draw pathLength="1" d="M58 119 C42 111 36 96 34 82 C50 88 59 98 58 119Z"></path>
+            <path data-draw pathLength="1" d="M66 90 C84 81 94 63 98 47 C80 51 68 66 66 90Z"></path>
+            <g transform="translate(70 23) rotate(8) scale(0.9)">
+              <path data-draw data-petal pathLength="1" d="M0 0 C-6 -9 -5 -21 1 -26 C9 -21 9 -9 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 -6 20 -6 25 2 C18 10 7 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 7 10 19 2 25 C-4 18 -4 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-7 8 -19 10 -25 3 C-18 -6 -7 -7 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-8 -4 -16 -13 -12 -22 C-2 -19 4 -9 0 0Z"></path>
+              <circle data-draw pathLength="1" cx="0" cy="0" r="3.2"></circle>
+              <path data-draw pathLength="1" d="M0 0 C1 -8 1 -15 1 -22 M0 0 C7 -2 14 -1 21 2 M0 0 C4 7 5 14 2 21 M0 0 C-7 2 -14 3 -21 3"></path>
+            </g>
+            <path data-draw pathLength="1" d="M70 22 C61 12 61 4 71 1 C81 8 80 18 70 22Z"></path>
+            <path data-draw pathLength="1" d="M70 22 C83 14 95 17 101 28 C90 38 78 34 70 22Z"></path>
+            <path data-draw pathLength="1" d="M70 22 C58 33 45 31 39 20 C50 10 62 12 70 22Z"></path>
+            <circle data-draw pathLength="1" cx="70" cy="23" r="3"></circle>
+          </g>
+        </svg>
+
+        <svg class="line-flower" style="--x: 18%; --y: 84%; --r: 20deg; --s: 0.78; --w: 11vw; --delay: 4.95s; --flower-opacity: 0.5;" viewBox="0 0 120 160">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M28 150 C43 121 59 94 88 62"></path>
+            <path data-draw pathLength="1" d="M48 113 C31 112 19 101 14 88 C31 87 43 96 48 113Z"></path>
+            <path data-draw pathLength="1" d="M70 83 C64 65 69 51 81 42 C86 58 82 72 70 83Z"></path>
+            <g transform="translate(88 62) rotate(-12) scale(0.88)">
+              <path data-draw data-petal pathLength="1" d="M0 0 C-6 -9 -5 -21 1 -26 C9 -21 9 -9 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 -6 20 -6 25 2 C18 10 7 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 7 10 19 2 25 C-4 18 -4 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-7 8 -19 10 -25 3 C-18 -6 -7 -7 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-8 -4 -16 -13 -12 -22 C-2 -19 4 -9 0 0Z"></path>
+              <circle data-draw pathLength="1" cx="0" cy="0" r="3.2"></circle>
+              <path data-draw pathLength="1" d="M0 0 C1 -8 1 -15 1 -22 M0 0 C7 -2 14 -1 21 2 M0 0 C4 7 5 14 2 21 M0 0 C-7 2 -14 3 -21 3"></path>
+            </g>
+            <path data-draw pathLength="1" d="M88 62 C78 52 75 39 84 31 C96 35 99 50 88 62Z"></path>
+            <path data-draw pathLength="1" d="M88 62 C101 52 112 55 117 66 C107 78 94 75 88 62Z"></path>
+            <path data-draw pathLength="1" d="M88 62 C77 72 64 70 60 58 C70 49 80 51 88 62Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower" style="--x: 49%; --y: 7%; --r: 86deg; --s: 0.66; --w: 10vw; --delay: 5.55s; --flower-color: rgba(255, 235, 205, 0.48);" viewBox="0 0 120 160">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M60 154 C61 124 54 96 63 66"></path>
+            <path data-draw pathLength="1" d="M62 101 C47 96 40 85 39 72 C53 77 62 86 62 101Z"></path>
+            <g transform="translate(63 66) rotate(4) scale(0.86)">
+              <path data-draw data-petal pathLength="1" d="M0 0 C-6 -9 -5 -21 1 -26 C9 -21 9 -9 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 -6 20 -6 25 2 C18 10 7 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 7 10 19 2 25 C-4 18 -4 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-7 8 -19 10 -25 3 C-18 -6 -7 -7 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-8 -4 -16 -13 -12 -22 C-2 -19 4 -9 0 0Z"></path>
+              <circle data-draw pathLength="1" cx="0" cy="0" r="3.2"></circle>
+              <path data-draw pathLength="1" d="M0 0 C1 -8 1 -15 1 -22 M0 0 C7 -2 14 -1 21 2 M0 0 C4 7 5 14 2 21 M0 0 C-7 2 -14 3 -21 3"></path>
+            </g>
+            <path data-draw pathLength="1" d="M63 66 C51 54 48 38 59 29 C72 38 74 54 63 66Z"></path>
+            <path data-draw pathLength="1" d="M63 66 C73 53 88 51 98 60 C91 73 76 77 63 66Z"></path>
+            <path data-draw pathLength="1" d="M63 66 C53 77 39 75 31 64 C40 52 54 54 63 66Z"></path>
+            <circle data-draw pathLength="1" cx="63" cy="66" r="4"></circle>
+          </g>
+        </svg>
+
+        <svg class="line-flower" style="--x: 91%; --y: 21%; --r: 19deg; --s: 0.88; --w: 12vw; --delay: 4.7s; --flower-color: rgba(210, 229, 255, 0.52);" viewBox="0 0 120 160">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M62 154 C65 127 63 101 51 76 C43 59 43 42 52 24"></path>
+            <path data-draw pathLength="1" d="M59 122 C76 115 84 101 86 86 C69 91 59 102 59 122Z"></path>
+            <path data-draw pathLength="1" d="M53 82 C35 73 25 58 21 43 C38 46 50 59 53 82Z"></path>
+            <g transform="translate(52 24) rotate(-8) scale(0.88)">
+              <path data-draw data-petal pathLength="1" d="M0 0 C-6 -9 -5 -21 1 -26 C9 -21 9 -9 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 -6 20 -6 25 2 C18 10 7 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 7 10 19 2 25 C-4 18 -4 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-7 8 -19 10 -25 3 C-18 -6 -7 -7 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-8 -4 -16 -13 -12 -22 C-2 -19 4 -9 0 0Z"></path>
+              <circle data-draw pathLength="1" cx="0" cy="0" r="3.2"></circle>
+              <path data-draw pathLength="1" d="M0 0 C1 -8 1 -15 1 -22 M0 0 C7 -2 14 -1 21 2 M0 0 C4 7 5 14 2 21 M0 0 C-7 2 -14 3 -21 3"></path>
+            </g>
+            <path data-draw pathLength="1" d="M52 24 C61 12 73 11 82 22 C76 35 62 36 52 24Z"></path>
+            <path data-draw pathLength="1" d="M52 24 C38 17 27 23 24 35 C37 42 48 36 52 24Z"></path>
+            <path data-draw pathLength="1" d="M52 24 C45 36 48 49 61 54 C70 43 65 31 52 24Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower" style="--x: 84%; --y: 80%; --r: -24deg; --s: 1.05; --w: 14vw; --delay: 5.15s; --flower-opacity: 0.54;" viewBox="0 0 120 160">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M68 156 C66 126 70 101 58 75 C50 59 49 43 56 27"></path>
+            <path data-draw pathLength="1" d="M66 118 C84 109 93 92 95 74 C77 81 67 97 66 118Z"></path>
+            <path data-draw pathLength="1" d="M57 76 C39 71 29 57 25 43 C42 44 54 58 57 76Z"></path>
+            <g transform="translate(56 27) rotate(6) scale(0.9)">
+              <path data-draw data-petal pathLength="1" d="M0 0 C-6 -9 -5 -21 1 -26 C9 -21 9 -9 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 -6 20 -6 25 2 C18 10 7 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 7 10 19 2 25 C-4 18 -4 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-7 8 -19 10 -25 3 C-18 -6 -7 -7 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-8 -4 -16 -13 -12 -22 C-2 -19 4 -9 0 0Z"></path>
+              <circle data-draw pathLength="1" cx="0" cy="0" r="3.2"></circle>
+              <path data-draw pathLength="1" d="M0 0 C1 -8 1 -15 1 -22 M0 0 C7 -2 14 -1 21 2 M0 0 C4 7 5 14 2 21 M0 0 C-7 2 -14 3 -21 3"></path>
+            </g>
+            <path data-draw pathLength="1" d="M56 27 C47 15 51 5 63 3 C73 12 68 24 56 27Z"></path>
+            <path data-draw pathLength="1" d="M56 27 C70 18 82 22 87 34 C76 44 63 40 56 27Z"></path>
+            <path data-draw pathLength="1" d="M56 27 C44 39 31 35 27 23 C39 15 50 17 56 27Z"></path>
+            <circle data-draw pathLength="1" cx="56" cy="27" r="3.5"></circle>
+          </g>
+        </svg>
+
+        <svg class="line-flower" style="--x: 33%; --y: 93%; --r: -76deg; --s: 0.64; --w: 10vw; --delay: 5.85s; --flower-color: rgba(255, 235, 205, 0.42);" viewBox="0 0 120 160">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M24 144 C49 125 71 101 92 70"></path>
+            <path data-draw pathLength="1" d="M47 122 C34 121 24 113 18 102 C31 99 42 108 47 122Z"></path>
+            <path data-draw pathLength="1" d="M70 95 C62 83 62 69 72 59 C82 70 80 85 70 95Z"></path>
+            <g transform="translate(92 70) rotate(-10) scale(0.78)">
+              <path data-draw data-petal pathLength="1" d="M0 0 C-6 -9 -5 -21 1 -26 C9 -21 9 -9 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 -6 20 -6 25 2 C18 10 7 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 7 10 19 2 25 C-4 18 -4 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-7 8 -19 10 -25 3 C-18 -6 -7 -7 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-8 -4 -16 -13 -12 -22 C-2 -19 4 -9 0 0Z"></path>
+              <circle data-draw pathLength="1" cx="0" cy="0" r="3.2"></circle>
+              <path data-draw pathLength="1" d="M0 0 C1 -8 1 -15 1 -22 M0 0 C7 -2 14 -1 21 2 M0 0 C4 7 5 14 2 21 M0 0 C-7 2 -14 3 -21 3"></path>
+            </g>
+            <path data-draw pathLength="1" d="M92 70 C83 61 80 49 89 40 C101 44 103 59 92 70Z"></path>
+            <path data-draw pathLength="1" d="M92 70 C103 62 114 65 119 75 C110 86 99 83 92 70Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower" style="--x: 98%; --y: 49%; --r: -2deg; --s: 0.7; --w: 10vw; --delay: 5.42s; --flower-color: rgba(210, 229, 255, 0.44);" viewBox="0 0 120 160">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M62 154 C60 123 57 98 68 71"></path>
+            <path data-draw pathLength="1" d="M64 104 C48 98 38 87 34 74 C50 77 62 88 64 104Z"></path>
+            <g transform="translate(68 71) rotate(7) scale(0.82)">
+              <path data-draw data-petal pathLength="1" d="M0 0 C-6 -9 -5 -21 1 -26 C9 -21 9 -9 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 -6 20 -6 25 2 C18 10 7 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 7 10 19 2 25 C-4 18 -4 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-7 8 -19 10 -25 3 C-18 -6 -7 -7 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-8 -4 -16 -13 -12 -22 C-2 -19 4 -9 0 0Z"></path>
+              <circle data-draw pathLength="1" cx="0" cy="0" r="3.2"></circle>
+              <path data-draw pathLength="1" d="M0 0 C1 -8 1 -15 1 -22 M0 0 C7 -2 14 -1 21 2 M0 0 C4 7 5 14 2 21 M0 0 C-7 2 -14 3 -21 3"></path>
+            </g>
+            <path data-draw pathLength="1" d="M68 71 C57 59 55 45 64 35 C76 43 79 59 68 71Z"></path>
+            <path data-draw pathLength="1" d="M68 71 C82 63 95 67 100 78 C88 88 76 83 68 71Z"></path>
+            <path data-draw pathLength="1" d="M68 71 C56 82 44 78 39 66 C50 58 61 61 68 71Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower" style="--x: 3%; --y: 58%; --r: 12deg; --s: 0.74; --w: 10vw; --delay: 5.28s; --flower-opacity: 0.45;" viewBox="0 0 120 160">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M64 155 C61 126 62 102 52 77 C45 59 45 42 54 24"></path>
+            <path data-draw pathLength="1" d="M62 124 C79 118 88 105 91 90 C74 94 63 106 62 124Z"></path>
+            <path data-draw pathLength="1" d="M52 78 C36 72 25 59 22 45 C39 47 50 60 52 78Z"></path>
+            <g transform="translate(54 24) rotate(-5) scale(0.76)">
+              <path data-draw data-petal pathLength="1" d="M0 0 C-6 -9 -5 -21 1 -26 C9 -21 9 -9 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 -6 20 -6 25 2 C18 10 7 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 7 10 19 2 25 C-4 18 -4 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-7 8 -19 10 -25 3 C-18 -6 -7 -7 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-8 -4 -16 -13 -12 -22 C-2 -19 4 -9 0 0Z"></path>
+              <circle data-draw pathLength="1" cx="0" cy="0" r="3.2"></circle>
+              <path data-draw pathLength="1" d="M0 0 C1 -8 1 -15 1 -22 M0 0 C7 -2 14 -1 21 2 M0 0 C4 7 5 14 2 21 M0 0 C-7 2 -14 3 -21 3"></path>
+            </g>
+            <path data-draw pathLength="1" d="M54 24 C46 14 48 5 59 2 C69 10 66 21 54 24Z"></path>
+            <path data-draw pathLength="1" d="M54 24 C67 16 79 20 84 31 C73 40 61 36 54 24Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower" style="--x: 73%; --y: 8%; --r: -98deg; --s: 0.58; --w: 9vw; --delay: 6.05s; --flower-color: rgba(255, 235, 205, 0.44);" viewBox="0 0 120 160">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M29 145 C52 124 74 101 91 68"></path>
+            <path data-draw pathLength="1" d="M51 120 C38 118 29 108 25 96 C39 95 49 105 51 120Z"></path>
+            <path data-draw pathLength="1" d="M72 92 C66 78 68 65 79 56 C87 69 84 83 72 92Z"></path>
+            <g transform="translate(91 68) rotate(-12) scale(0.74)">
+              <path data-draw data-petal pathLength="1" d="M0 0 C-6 -9 -5 -21 1 -26 C9 -21 9 -9 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 -6 20 -6 25 2 C18 10 7 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 7 10 19 2 25 C-4 18 -4 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-7 8 -19 10 -25 3 C-18 -6 -7 -7 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-8 -4 -16 -13 -12 -22 C-2 -19 4 -9 0 0Z"></path>
+              <circle data-draw pathLength="1" cx="0" cy="0" r="3.2"></circle>
+              <path data-draw pathLength="1" d="M0 0 C1 -8 1 -15 1 -22 M0 0 C7 -2 14 -1 21 2 M0 0 C4 7 5 14 2 21 M0 0 C-7 2 -14 3 -21 3"></path>
+            </g>
+            <path data-draw pathLength="1" d="M91 68 C82 59 80 47 90 39 C101 45 103 57 91 68Z"></path>
+            <path data-draw pathLength="1" d="M91 68 C103 60 114 64 118 75 C108 84 98 81 91 68Z"></path>
+          </g>
+        </svg>
+
+        <svg class="line-flower" style="--x: 11%; --y: 96%; --r: -34deg; --s: 0.55; --w: 9vw; --delay: 6.2s; --flower-color: rgba(210, 229, 255, 0.42);" viewBox="0 0 120 160">
+          <g class="flower-motion">
+            <path data-draw pathLength="1" d="M58 154 C58 124 53 100 63 72"></path>
+            <path data-draw pathLength="1" d="M61 104 C47 99 38 88 35 76 C49 79 59 90 61 104Z"></path>
+            <g transform="translate(63 72) rotate(10) scale(0.72)">
+              <path data-draw data-petal pathLength="1" d="M0 0 C-6 -9 -5 -21 1 -26 C9 -21 9 -9 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 -6 20 -6 25 2 C18 10 7 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C8 7 10 19 2 25 C-4 18 -4 8 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-7 8 -19 10 -25 3 C-18 -6 -7 -7 0 0Z"></path>
+              <path data-draw data-petal pathLength="1" d="M0 0 C-8 -4 -16 -13 -12 -22 C-2 -19 4 -9 0 0Z"></path>
+              <circle data-draw pathLength="1" cx="0" cy="0" r="3.2"></circle>
+              <path data-draw pathLength="1" d="M0 0 C1 -8 1 -15 1 -22 M0 0 C7 -2 14 -1 21 2 M0 0 C4 7 5 14 2 21 M0 0 C-7 2 -14 3 -21 3"></path>
+            </g>
+            <path data-draw pathLength="1" d="M63 72 C52 61 50 48 59 39 C71 47 74 60 63 72Z"></path>
+            <path data-draw pathLength="1" d="M63 72 C75 63 88 65 96 75 C86 87 73 84 63 72Z"></path>
+            <circle data-draw pathLength="1" cx="63" cy="72" r="3"></circle>
+          </g>
+        </svg>
+      </div>
+
+      <div class="ending-scene">
+        <div class="bloom" aria-hidden="true">
+          <span class="bloom-ring"></span>
+          <span class="bloom-ring"></span>
+          <span class="bloom-ring"></span>
+          <span class="bloom-ring"></span>
+          <span class="bloom-rays"></span>
+          <span class="bloom-lattice"></span>
+          <span class="petal" style="--i: 0"></span>
+          <span class="petal" style="--i: 1"></span>
+          <span class="petal" style="--i: 2"></span>
+          <span class="petal" style="--i: 3"></span>
+          <span class="petal" style="--i: 4"></span>
+          <span class="petal" style="--i: 5"></span>
+          <span class="petal" style="--i: 6"></span>
+          <span class="petal" style="--i: 7"></span>
+          <span class="petal" style="--i: 8"></span>
+          <span class="petal" style="--i: 9"></span>
+          <span class="petal" style="--i: 10"></span>
+          <span class="petal" style="--i: 11"></span>
+          <span class="bloom-core"></span>
+          <span class="bloom-glint"></span>
+        </div>
+
+        <svg class="signature-bloom" viewBox="0 0 360 280" aria-hidden="true">
+          <g class="signature-bloom-drawing">
+            <path data-draw data-petal pathLength="1" d="M180 147 C132 160 72 153 37 118 C43 93 68 78 101 79 C132 80 163 105 180 147Z"></path>
+            <path data-draw data-petal pathLength="1" d="M180 147 C226 160 287 154 322 118 C315 91 291 76 258 78 C228 80 198 104 180 147Z"></path>
+            <path data-draw data-petal pathLength="1" d="M180 145 C142 126 113 88 124 48 C142 28 172 31 188 53 C200 80 195 114 180 145Z"></path>
+            <path data-draw data-petal pathLength="1" d="M181 145 C210 120 226 78 209 44 C226 25 257 32 272 56 C279 92 235 130 181 145Z"></path>
+            <path data-draw data-petal pathLength="1" d="M178 145 C144 119 131 79 151 43 C133 26 101 34 88 60 C81 94 123 132 178 145Z"></path>
+            <path data-draw data-petal pathLength="1" d="M181 154 C135 178 92 203 77 241 C112 252 153 226 181 154Z"></path>
+            <path data-draw data-petal pathLength="1" d="M181 154 C230 177 272 201 287 238 C250 251 209 224 181 154Z"></path>
+            <path data-draw data-petal pathLength="1" d="M179 156 C147 159 113 151 92 129 C96 109 117 98 143 102 C167 106 178 128 179 156Z"></path>
+            <path data-draw data-petal pathLength="1" d="M181 156 C214 159 248 151 269 128 C265 108 242 97 217 102 C194 106 182 128 181 156Z"></path>
+            <path data-draw data-petal pathLength="1" d="M180 151 C159 128 150 97 165 72 C184 66 203 78 207 100 C206 121 194 139 180 151Z"></path>
+            <path data-draw data-petal pathLength="1" d="M177 154 C154 144 137 126 137 106 C153 92 180 101 183 128 C184 139 181 148 177 154Z"></path>
+            <path data-draw data-petal pathLength="1" d="M184 154 C208 144 225 126 224 106 C207 91 181 102 178 129 C177 140 180 149 184 154Z"></path>
+            <path data-draw data-petal pathLength="1" d="M179 165 C154 170 133 164 119 148 C123 129 146 124 171 137 C183 145 187 154 179 165Z"></path>
+            <path data-draw data-petal pathLength="1" d="M181 165 C206 170 228 164 241 147 C236 129 214 124 190 137 C179 145 174 155 181 165Z"></path>
+            <path data-draw data-petal pathLength="1" d="M156 145 C166 132 193 132 204 145 C201 166 188 178 180 180 C171 176 160 166 156 145Z"></path>
+
+            <path data-draw data-vein pathLength="1" d="M55 116 C92 112 128 121 170 145"></path>
+            <path data-draw data-vein pathLength="1" d="M72 98 C104 102 137 118 173 146"></path>
+            <path data-draw data-vein pathLength="1" d="M104 83 C125 94 152 119 178 146"></path>
+            <path data-draw data-vein pathLength="1" d="M305 116 C268 113 231 121 190 145"></path>
+            <path data-draw data-vein pathLength="1" d="M287 98 C255 103 223 118 187 146"></path>
+            <path data-draw data-vein pathLength="1" d="M257 84 C235 94 207 119 182 146"></path>
+            <path data-draw data-vein pathLength="1" d="M135 53 C145 79 160 111 178 144"></path>
+            <path data-draw data-vein pathLength="1" d="M184 55 C184 88 182 118 180 144"></path>
+            <path data-draw data-vein pathLength="1" d="M236 54 C222 82 202 114 183 144"></path>
+            <path data-draw data-vein pathLength="1" d="M101 236 C126 213 151 184 179 154"></path>
+            <path data-draw data-vein pathLength="1" d="M260 234 C236 211 208 184 181 154"></path>
+            <path data-draw data-vein pathLength="1" d="M126 145 C143 145 160 150 178 162"></path>
+            <path data-draw data-vein pathLength="1" d="M235 145 C217 145 200 150 181 162"></path>
+            <path data-draw data-vein pathLength="1" d="M166 75 C170 100 174 126 179 151"></path>
+            <path data-draw data-vein pathLength="1" d="M203 78 C197 103 189 130 181 151"></path>
+
+            <path data-draw data-stamen pathLength="1" d="M151 139 C148 120 143 102 132 87"></path>
+            <path data-draw data-stamen pathLength="1" d="M158 137 C157 117 153 98 145 83"></path>
+            <path data-draw data-stamen pathLength="1" d="M166 135 C166 113 162 96 158 79"></path>
+            <path data-draw data-stamen pathLength="1" d="M174 134 C174 111 172 95 173 78"></path>
+            <path data-draw data-stamen pathLength="1" d="M182 134 C183 111 187 95 191 79"></path>
+            <path data-draw data-stamen pathLength="1" d="M190 135 C194 113 201 97 210 83"></path>
+            <path data-draw data-stamen pathLength="1" d="M198 138 C205 119 214 103 226 91"></path>
+            <path data-draw data-stamen pathLength="1" d="M144 144 C135 127 124 115 110 106"></path>
+            <path data-draw data-stamen pathLength="1" d="M206 143 C218 127 231 116 248 108"></path>
+
+            <circle data-pollen cx="132" cy="87" r="2.4"></circle>
+            <circle data-pollen cx="145" cy="83" r="2.1"></circle>
+            <circle data-pollen cx="158" cy="79" r="2.2"></circle>
+            <circle data-pollen cx="173" cy="78" r="2.3"></circle>
+            <circle data-pollen cx="191" cy="79" r="2.4"></circle>
+            <circle data-pollen cx="210" cy="83" r="2.2"></circle>
+            <circle data-pollen cx="226" cy="91" r="2.1"></circle>
+            <circle data-pollen cx="110" cy="106" r="2"></circle>
+            <circle data-pollen cx="248" cy="108" r="2"></circle>
+
+            <path data-draw pathLength="1" d="M181 181 C179 211 171 241 151 276"></path>
+            <path data-draw pathLength="1" d="M180 181 C193 211 200 241 207 276"></path>
+            <path data-draw data-petal pathLength="1" d="M151 235 C122 219 103 218 80 229 C106 252 133 253 151 235Z"></path>
+            <path data-draw data-petal pathLength="1" d="M207 233 C235 213 258 207 285 215 C262 243 228 252 207 233Z"></path>
+            <path data-draw data-vein pathLength="1" d="M87 229 C111 229 130 232 151 235"></path>
+            <path data-draw data-vein pathLength="1" d="M281 215 C252 221 229 228 207 233"></path>
+          </g>
+        </svg>
+
+        <div class="final-mark">
+          <div class="final-signature">ovekirito</div>
+          <div class="final-copy">photography & creativity</div>
+          <div class="final-links" aria-label="社交媒体链接">
+            <a class="final-link" href="qrcode/Xiao2.png" target="_blank" rel="noopener" aria-label="小红书二维码">
+              <svg viewBox="0 0 28 28" aria-hidden="true">
+                <rect x="5" y="5" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"></rect>
+                <path d="M9 12h10M9 16h6M17 16h2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path>
+              </svg>
+            </a>
+            <a class="final-link" href="qrcode/dy1.png" target="_blank" rel="noopener" aria-label="抖音二维码">
+              <svg viewBox="0 0 28 28" aria-hidden="true">
+                <path d="M16 6v11.2a4.2 4.2 0 1 1-3.3-4.1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.9"></path>
+                <path d="M16 7c1.1 3.2 3 5 6 5.4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.9"></path>
+              </svg>
+            </a>
+            <a class="final-link" href="mailto:chyifan06@163.com" aria-label="邮箱 chyifan06@163.com">
+              <svg viewBox="0 0 28 28" aria-hidden="true">
+                <rect x="5" y="8" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"></rect>
+                <path d="m6.5 10 7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <p class="ending-tagline">Integrate photography into life and develop your own photographic style</p>
+
+      <button class="icon-button back-top" type="button" id="backTop" aria-label="回到顶部">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 19V5"></path>
+          <path d="m6 11 6-6 6 6"></path>
+        </svg>
+      </button>
+    </section>
+    <!-- Ending Animation end -->
+  </main>
+
+  <script>
+    /* =========================================================
+       Loading animation
+    ========================================================= */
+    const preloader = document.getElementById("preloader");
+    const siteScroll = document.getElementById("siteScroll");
+    const pagePanels = Array.from(document.querySelectorAll(".panel"));
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let activePanelIndex = 0;
+    let pageScrollFrame = 0;
+    let pageScrollAnimating = false;
+    let galleryWheelLocked = false;
+    let touchStartY = 0;
+
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    function resetToHome() {
+      activePanelIndex = 0;
+      siteScroll.scrollTop = 0;
+      window.scrollTo(0, 0);
+      if (window.location.hash || window.location.href.endsWith("#")) {
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
+    }
+
+    function nearestPanelIndex() {
+      const currentTop = siteScroll.scrollTop;
+      return pagePanels.reduce((nearest, panel, index) => {
+        const distance = Math.abs(panel.offsetTop - currentTop);
+        return distance < nearest.distance ? { index, distance } : nearest;
+      }, { index: 0, distance: Infinity }).index;
+    }
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function animatePageScroll(targetTop, duration = 980) {
+      window.cancelAnimationFrame(pageScrollFrame);
+
+      if (prefersReducedMotion) {
+        siteScroll.scrollTop = targetTop;
+        pageScrollAnimating = false;
+        return;
+      }
+
+      const startTop = siteScroll.scrollTop;
+      const distance = targetTop - startTop;
+      const startTime = performance.now();
+      pageScrollAnimating = true;
+
+      function step(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        siteScroll.scrollTop = startTop + distance * easeInOutCubic(progress);
+
+        if (progress < 1) {
+          pageScrollFrame = window.requestAnimationFrame(step);
+          return;
+        }
+
+        siteScroll.scrollTop = targetTop;
+        pageScrollAnimating = false;
+      }
+
+      pageScrollFrame = window.requestAnimationFrame(step);
+    }
+
+    function scrollToPanel(index) {
+      const targetIndex = Math.max(0, Math.min(pagePanels.length - 1, index));
+      if (targetIndex === activePanelIndex && !pageScrollAnimating) return;
+      activePanelIndex = targetIndex;
+      animatePageScroll(pagePanels[targetIndex].offsetTop);
+    }
+
+    function handlePageStep(direction) {
+      const currentIndex = nearestPanelIndex();
+      scrollToPanel(currentIndex + direction);
+    }
+
+    resetToHome();
+
+    window.addEventListener("load", () => {
+      resetToHome();
+      window.setTimeout(() => {
+        resetToHome();
+        preloader.classList.add("is-hidden");
+        document.body.classList.add("ready");
+      }, 2650);
+    });
+
+    siteScroll.addEventListener("wheel", (event) => {
+      if (Math.abs(event.deltaY) < 12 || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+
+      const currentIndex = nearestPanelIndex();
+      if (pagePanels[currentIndex]?.id === "gallery" && event.target.closest(".gallery")) {
+        event.preventDefault();
+        handleGalleryWheel(event.deltaY > 0 ? 1 : -1);
+        return;
+      }
+
+      event.preventDefault();
+      if (pageScrollAnimating) return;
+      handlePageStep(event.deltaY > 0 ? 1 : -1);
+    }, { passive: false });
+
+    siteScroll.addEventListener("touchstart", (event) => {
+      touchStartY = event.touches[0].clientY;
+    }, { passive: true });
+
+    siteScroll.addEventListener("touchmove", (event) => {
+      if (Math.abs(event.touches[0].clientY - touchStartY) > 18) {
+        event.preventDefault();
+      }
+    }, { passive: false });
+
+    siteScroll.addEventListener("touchend", (event) => {
+      const touchEndY = event.changedTouches[0].clientY;
+      const deltaY = touchStartY - touchEndY;
+      if (Math.abs(deltaY) < 46 || pageScrollAnimating) return;
+      handlePageStep(deltaY > 0 ? 1 : -1);
+    }, { passive: true });
+
+    siteScroll.addEventListener("scroll", () => {
+      if (!pageScrollAnimating) {
+        activePanelIndex = nearestPanelIndex();
+      }
+    }, { passive: true });
+
+    /* =========================================================
+       Portfolio Slider: 3D cover flow
+    ========================================================= */
+    const categoryPhotoFiles = {
+      scenery: ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.png", "12.jpg", "13.png", "14.png", "15.png", "16.jpg", "17.jpg", "18.jpg", "19.jpg", "20.jpg", "21.png", "22.png", "23.jpg", "24.jpg", "25.jpg", "26.jpg", "27.jpg", "28.jpg", "29.jpg", "30.jpg", "31.jpg", "32.jpg", "33.jpg", "34.jpg", "35.jpg", "36.jpg", "37.jpg", "38.jpg", "39.jpg", "40.jpg", "41.jpg", "42.jpg", "43.png", "44.png", "45.jpg", "46.jpg", "47.jpg", "48.jpg", "49.jpg", "50.jpg"],
+      exhibition: ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg", "17.jpg", "18.jpg", "19.jpg", "20.jpg"],
+      animal: ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.png", "16.jpg", "17.jpg", "18.jpg", "19.jpg", "20.jpg", "21.jpg", "22.jpg", "23.jpg", "24.jpg", "25.jpg", "26.jpg", "27.jpg", "28.jpg", "29.jpg", "30.jpg", "31.jpg", "32.jpg", "33.jpg", "34.jpg"],
+      portrait: ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg", "17.jpg", "18.jpg", "19.jpg", "20.jpg", "21.jpg", "22.jpg", "23.jpg", "24.jpg", "25.jpg"],
+      mix: ["1.png", "2.png", "3.jpg", "4.jpg", "5.png", "6.png", "7.png"]
+    };
+    const categoryOrder = ["scenery", "exhibition", "animal", "portrait", "mix"];
+    const categoryNames = {
+      scenery: "风景",
+      exhibition: "展会",
+      animal: "动物",
+      portrait: "人像",
+      mix: "mix"
+    };
+
+    function photoSrc(category, file) {
+      return `${category}/${file}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function photoItem(category, file, index) {
+      return {
+        category,
+        file,
+        src: photoSrc(category, file),
+        label: categoryNames[category],
+        caption: `${category} ${index + 1}`
+      };
+    }
+
+    const carousel = document.getElementById("portfolioCarousel");
+    const portfolioItems = [0, 1, 2].flatMap((round) => (
+      categoryOrder
+        .map((category) => {
+          const file = category === "mix" ? "6.png" : categoryPhotoFiles[category][round];
+          return file ? photoItem(category, file, round) : null;
+        })
+        .filter(Boolean)
+    ));
+
+    carousel.innerHTML = portfolioItems.map((item, index) => `
+      <article class="carousel-card" role="option" aria-label="${escapeHtml(item.caption)}">
+        <div class="photo-matte" style="--photo-bg: url(&quot;${escapeHtml(item.src)}&quot;)">
+          <img class="portfolio-photo" src="${escapeHtml(item.src)}" alt="${escapeHtml(item.caption)}" loading="${index === 0 ? "eager" : "lazy"}">
+        </div>
+        <p class="card-caption">${escapeHtml(item.caption)}</p>
+      </article>
+    `).join("");
+
+    const cards = Array.from(carousel.querySelectorAll(".carousel-card"));
+    const prevSlide = document.getElementById("prevSlide");
+    const nextSlide = document.getElementById("nextSlide");
+    const dotsWrap = document.getElementById("carouselDots");
+    let activeSlide = 0;
+    let dragStartX = 0;
+    let dragCurrentX = 0;
+    let isDragging = false;
+    const carouselAutoplayDelay = 5000;
+    let carouselAutoplayTimer = 0;
+
+    const dotButtons = cards.map((card, index) => {
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.className = "carousel-dot";
+      button.type = "button";
+      button.setAttribute("aria-label", `切换到第 ${index + 1} 张作品`);
+      button.addEventListener("click", () => {
+        setActiveSlide(index);
+        restartCarouselAutoplay();
+      });
+      item.appendChild(button);
+      dotsWrap.appendChild(item);
+      return button;
+    });
+
+    function circularOffset(index, active, total) {
+      let offset = index - active;
+      if (offset > total / 2) offset -= total;
+      if (offset < -total / 2) offset += total;
+      return offset;
+    }
+
+    function renderCarousel() {
+      const total = cards.length;
+
+      cards.forEach((card, index) => {
+        const offset = circularOffset(index, activeSlide, total);
+        const abs = Math.abs(offset);
+        const opacity = abs === 0 ? 1 : abs === 1 ? 0.24 : abs === 2 ? 0.11 : abs === 3 ? 0.045 : abs === 4 ? 0.018 : 0;
+        const scale = abs === 0 ? 1 : abs === 1 ? 0.84 : abs === 2 ? 0.68 : abs === 3 ? 0.54 : abs === 4 ? 0.44 : 0.36;
+        const translateX = offset * 28;
+        const translateZ = abs === 0 ? 190 : abs === 1 ? 48 : abs === 2 ? -145 : abs === 3 ? -310 : -470;
+        const rotateY = offset * -9.5;
+
+        card.style.opacity = opacity;
+        card.style.zIndex = String(20 - abs);
+        card.style.filter = "none";
+        card.style.transform = `translateX(${translateX}%) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
+        card.classList.toggle("is-active", abs === 0);
+        card.setAttribute("aria-selected", abs === 0 ? "true" : "false");
+      });
+
+      dotButtons.forEach((button, index) => {
+        button.setAttribute("aria-current", index === activeSlide ? "true" : "false");
+      });
+    }
+
+    function setActiveSlide(index) {
+      activeSlide = (index + cards.length) % cards.length;
+      renderCarousel();
+    }
+
+    function goToNextSlide() {
+      setActiveSlide(activeSlide + 1);
+    }
+
+    function goToPrevSlide() {
+      setActiveSlide(activeSlide - 1);
+    }
+
+    function stopCarouselAutoplay() {
+      window.clearTimeout(carouselAutoplayTimer);
+    }
+
+    function startCarouselAutoplay() {
+      stopCarouselAutoplay();
+      carouselAutoplayTimer = window.setTimeout(() => {
+        if (!document.hidden && !isDragging) {
+          goToNextSlide();
+        }
+        startCarouselAutoplay();
+      }, carouselAutoplayDelay);
+    }
+
+    function restartCarouselAutoplay() {
+      startCarouselAutoplay();
+    }
+
+    prevSlide.addEventListener("click", () => {
+      goToPrevSlide();
+      restartCarouselAutoplay();
+    });
+
+    nextSlide.addEventListener("click", () => {
+      goToNextSlide();
+      restartCarouselAutoplay();
+    });
+
+    carousel.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        goToPrevSlide();
+        restartCarouselAutoplay();
+      }
+      if (event.key === "ArrowRight") {
+        goToNextSlide();
+        restartCarouselAutoplay();
+      }
+    });
+
+    carousel.addEventListener("pointerdown", (event) => {
+      stopCarouselAutoplay();
+      isDragging = true;
+      dragStartX = event.clientX;
+      dragCurrentX = event.clientX;
+      carousel.classList.add("dragging");
+      carousel.setPointerCapture(event.pointerId);
+    });
+
+    carousel.addEventListener("pointermove", (event) => {
+      if (!isDragging) return;
+      dragCurrentX = event.clientX;
+    });
+
+    function finishDrag(event) {
+      if (!isDragging) return;
+      const delta = dragCurrentX - dragStartX;
+      isDragging = false;
+      carousel.classList.remove("dragging");
+
+      if (carousel.hasPointerCapture(event.pointerId)) {
+        carousel.releasePointerCapture(event.pointerId);
+      }
+
+      if (Math.abs(delta) > 48) {
+        if (delta < 0) goToNextSlide();
+        else goToPrevSlide();
+      }
+
+      restartCarouselAutoplay();
+    }
+
+    carousel.addEventListener("pointerup", finishDrag);
+    carousel.addEventListener("pointercancel", finishDrag);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stopCarouselAutoplay();
+      else restartCarouselAutoplay();
+    });
+    renderCarousel();
+    startCarouselAutoplay();
+
+    /* =========================================================
+       Category Gallery
+    ========================================================= */
+    const galleryData = categoryOrder.reduce((data, category) => {
+      data[category] = categoryPhotoFiles[category].map((file, index) => ({
+        category,
+        file,
+        src: photoSrc(category, file),
+        label: category,
+        subtitle: `${categoryNames[category]} / photo ${index + 1}`
+      }));
+      return data;
+    }, {});
+
+    const categoryNav = document.querySelector(".category-nav");
+    const galleryStage = document.getElementById("galleryStage");
+    const galleryPhoto = document.getElementById("galleryPhoto");
+    const galleryImage = document.getElementById("galleryImage");
+    const galleryLabel = document.getElementById("galleryLabel");
+    const gallerySubtitle = document.getElementById("gallerySubtitle");
+    const galleryCounter = document.getElementById("galleryCounter");
+    const nextGalleryPhoto = document.getElementById("nextGalleryPhoto");
+    const galleryPagerTrack = document.getElementById("galleryPagerTrack");
+    const galleryPager = document.querySelector(".gallery-pager");
+    const galleryPrevPanel = document.getElementById("galleryPrevPanel");
+    const galleryNextPanel = document.getElementById("galleryNextPanel");
+    const galleryCategories = [...categoryOrder];
+    const galleryState = {
+      category: "exhibition",
+      indexByCategory: Object.fromEntries(categoryOrder.map((category) => [category, 0]))
+    };
+
+    function loopCategory(index) {
+      return galleryCategories[(index + galleryCategories.length) % galleryCategories.length];
+    }
+
+    function renderCategoryLoop() {
+      const currentIndex = galleryCategories.indexOf(galleryState.category);
+      const fragment = document.createDocumentFragment();
+
+      for (let offset = -2; offset <= 2; offset += 1) {
+        const category = loopCategory(currentIndex + offset);
+        const button = document.createElement("button");
+        const depth = Math.abs(offset);
+        button.className = `category-btn category-depth-${depth}${offset === 0 ? " is-active" : ""}`;
+        button.type = "button";
+        button.dataset.category = category;
+        button.dataset.offset = String(offset);
+        button.textContent = category;
+        button.setAttribute("aria-current", offset === 0 ? "true" : "false");
+        fragment.appendChild(button);
+      }
+
+      categoryNav.replaceChildren(fragment);
+    }
+
+    function renderGallery(animate = true) {
+      const category = galleryState.category;
+      const index = galleryState.indexByCategory[category];
+      const items = galleryData[category];
+      const current = items[index];
+
+      const applyGalleryState = () => {
+        const imageLabel = `${current.label} photo ${index + 1}`;
+        galleryPhoto.style.setProperty("--gallery-image", `url("${current.src}")`);
+        galleryPhoto.setAttribute("aria-label", imageLabel);
+        galleryImage.src = current.src;
+        galleryImage.alt = imageLabel;
+        if (galleryImage.complete) {
+          updateGalleryImageOrientation();
+        }
+        galleryLabel.textContent = current.label;
+        gallerySubtitle.textContent = current.subtitle;
+        galleryCounter.textContent = `${index + 1} / ${items.length}`;
+        updateGalleryProgress(index, items.length);
+        renderCategoryLoop();
+      };
+
+      if (!animate) {
+        applyGalleryState();
+        return;
+      }
+
+      galleryStage.classList.add("is-switching");
+      window.setTimeout(() => {
+        applyGalleryState();
+        galleryStage.classList.remove("is-switching");
+      }, 210);
+    }
+
+    function updateGalleryImageOrientation() {
+      galleryPhoto.classList.toggle("is-portrait", galleryImage.naturalHeight > galleryImage.naturalWidth);
+    }
+
+    function updateGalleryProgress(index, total) {
+      const progress = total > 1 ? index / (total - 1) : 0;
+      galleryPager.style.setProperty("--gallery-progress", progress);
+      galleryPagerTrack.setAttribute("aria-valuemin", "1");
+      galleryPagerTrack.setAttribute("aria-valuemax", String(total));
+      galleryPagerTrack.setAttribute("aria-valuenow", String(index + 1));
+      galleryPagerTrack.setAttribute("aria-label", `当前第 ${index + 1} 张，共 ${total} 张`);
+    }
+
+    galleryImage.addEventListener("load", updateGalleryImageOrientation);
+
+    categoryNav.addEventListener("click", (event) => {
+      const button = event.target.closest(".category-btn");
+      if (!button) return;
+      const offset = Number(button.dataset.offset || 0);
+      if (offset === 0) return;
+      cycleGalleryCategory(offset);
+    });
+
+    function setGalleryCategory(category) {
+      galleryState.category = category;
+      renderGallery(true);
+    }
+
+    function cycleGalleryCategory(direction) {
+      const currentIndex = galleryCategories.indexOf(galleryState.category);
+      const nextIndex = (currentIndex + direction + galleryCategories.length) % galleryCategories.length;
+      setGalleryCategory(galleryCategories[nextIndex]);
+    }
+
+    function setGalleryPhotoIndex(index) {
+      const category = galleryState.category;
+      const total = galleryData[category].length;
+      galleryState.indexByCategory[category] = Math.max(0, Math.min(total - 1, index));
+      renderGallery(true);
+    }
+
+    function switchGalleryPhoto(direction) {
+      const category = galleryState.category;
+      const currentIndex = galleryState.indexByCategory[category];
+      const nextIndex = currentIndex + direction;
+      const total = galleryData[category].length;
+
+      if (nextIndex >= 0 && nextIndex < total) {
+        setGalleryPhotoIndex(nextIndex);
+        return;
+      }
+
+      const categoryIndex = galleryCategories.indexOf(category);
+
+      if (direction > 0) {
+        if (categoryIndex < galleryCategories.length - 1) {
+          const nextCategory = galleryCategories[categoryIndex + 1];
+          galleryState.category = nextCategory;
+          galleryState.indexByCategory[nextCategory] = 0;
+          renderGallery(true);
+          return;
+        }
+
+        scrollToPanel(pagePanels.findIndex((panel) => panel.id === "gallery") + 1);
+        return;
+      }
+
+      if (categoryIndex > 0) {
+        const previousCategory = galleryCategories[categoryIndex - 1];
+        galleryState.category = previousCategory;
+        galleryState.indexByCategory[previousCategory] = galleryData[previousCategory].length - 1;
+        renderGallery(true);
+        return;
+      }
+
+      scrollToPanel(pagePanels.findIndex((panel) => panel.id === "gallery") - 1);
+    }
+
+    function handleGalleryWheel(direction) {
+      if (galleryWheelLocked || pageScrollAnimating) return;
+      galleryWheelLocked = true;
+      switchGalleryPhoto(direction);
+      window.setTimeout(() => {
+        galleryWheelLocked = false;
+      }, 520);
+    }
+
+    nextGalleryPhoto.addEventListener("click", () => {
+      switchGalleryPhoto(1);
+    });
+
+    galleryPagerTrack.addEventListener("click", (event) => {
+      const rect = galleryPagerTrack.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+      const category = galleryState.category;
+      const total = galleryData[category].length;
+      setGalleryPhotoIndex(Math.round(ratio * (total - 1)));
+    });
+
+    galleryPagerTrack.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        switchGalleryPhoto(1);
+      }
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        switchGalleryPhoto(-1);
+      }
+    });
+
+    window.addEventListener("keydown", (event) => {
+      const tagName = document.activeElement?.tagName;
+      if (event.defaultPrevented || tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT") return;
+      if (pagePanels[nearestPanelIndex()]?.id !== "gallery") return;
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        switchGalleryPhoto(1);
+      }
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        switchGalleryPhoto(-1);
+      }
+    });
+
+    galleryNextPanel.addEventListener("click", () => {
+      scrollToPanel(pagePanels.findIndex((panel) => panel.id === "gallery") + 1);
+    });
+
+    galleryPrevPanel.addEventListener("click", () => {
+      scrollToPanel(pagePanels.findIndex((panel) => panel.id === "gallery") - 1);
+    });
+
+    renderGallery(false);
+
+    /* =========================================================
+       Contact QR hover reveal
+    ========================================================= */
+    const socialContactCards = Array.from(document.querySelectorAll(".contact-card.social"));
+
+    socialContactCards.forEach((card) => {
+      card.addEventListener("pointerenter", () => card.classList.add("is-revealed"));
+      card.addEventListener("pointerleave", () => card.classList.remove("is-revealed"));
+      card.addEventListener("focus", () => card.classList.add("is-revealed"));
+      card.addEventListener("blur", () => card.classList.remove("is-revealed"));
+    });
+
+    /* =========================================================
+       Ending animation trigger and back to top
+    ========================================================= */
+    const ending = document.getElementById("ending");
+    const backTop = document.getElementById("backTop");
+
+    const endingObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          ending.classList.add("is-active");
+        }
+      });
+    }, {
+      root: siteScroll,
+      threshold: 0.52
+    });
+
+    endingObserver.observe(ending);
+
+    backTop.addEventListener("click", () => {
+      scrollToPanel(0);
+    });
+  </script>
+</body>
+</html>
