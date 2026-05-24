@@ -190,6 +190,22 @@
       background: rgba(255, 255, 255, 0.18);
     }
 
+    .loader-tip {
+      min-height: 1.6em;
+      margin: 18px 0 0;
+      color: rgba(255, 255, 255, 0.58);
+      font-size: clamp(0.76rem, 1.15vw, 0.88rem);
+      font-weight: 400;
+      line-height: 1.6;
+      letter-spacing: 0.08em;
+      transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+    }
+
+    .loader-tip.is-changing {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
     .loader-fill {
       width: 100%;
       height: 100%;
@@ -2222,6 +2238,7 @@
       <div class="loader-track" aria-hidden="true">
         <div class="loader-fill"></div>
       </div>
+      <p class="loader-tip" id="loaderTip" aria-live="polite"></p>
     </div>
   </div>
   <!-- Global loading animation end -->
@@ -2416,7 +2433,7 @@
         <div class="gallery-stage" id="galleryStage">
           <!-- Real category photos are loaded from the matching local folders. -->
           <div class="gallery-photo" id="galleryPhoto" role="img" aria-label="exhibition photo 1">
-            <img class="gallery-photo-image" id="galleryImage" src="exhibition/1.jpg" alt="exhibition photo 1">
+            <img class="gallery-photo-image" id="galleryImage" src="exhibition/1.jpg" alt="exhibition photo 1" loading="lazy">
             <span class="gallery-photo-label" id="galleryLabel">exhibition</span>
             <span class="gallery-photo-subtitle" id="gallerySubtitle">photo 1</span>
           </div>
@@ -2505,7 +2522,7 @@
           <a class="contact-card" href="mailto:chyifan06@163.com" aria-label="邮箱 chyifan06@163.com">
             <span class="contact-mail-stage" aria-hidden="true">
               <span class="mail-visual">
-                <img class="mail-163-image" src="qrcode/163邮箱图标.png" alt="">
+                <img class="mail-163-image" src="qrcode/163邮箱图标.png" alt="" loading="lazy">
               </span>
             </span>
             <span>
@@ -3065,14 +3082,25 @@
        Loading animation
     ========================================================= */
     const preloader = document.getElementById("preloader");
+    const loaderTip = document.getElementById("loaderTip");
     const siteScroll = document.getElementById("siteScroll");
     const pagePanels = Array.from(document.querySelectorAll(".panel"));
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const loaderTips = [
+      "耐心片刻，邂逅专属风景",
+      "方寸天地，正在慢慢呈现",
+      "网络路途漫漫，稍等片刻就好啦",
+      "别急，精彩内容马上与你相见",
+      "放慢脚步，静待页面完整呈现",
+      "稍安勿躁，精彩马上就位"
+    ];
     let activePanelIndex = 0;
     let pageScrollFrame = 0;
     let pageScrollAnimating = false;
     let galleryWheelLocked = false;
     let touchStartY = 0;
+    let loaderTipIndex = 0;
+    let loaderTipTimer = 0;
 
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
@@ -3085,6 +3113,38 @@
       if (window.location.hash || window.location.href.endsWith("#")) {
         history.replaceState(null, "", window.location.pathname + window.location.search);
       }
+    }
+
+    function showLoaderTip(index, animate = true) {
+      if (!loaderTip) return;
+
+      if (!animate || prefersReducedMotion) {
+        loaderTip.textContent = loaderTips[index];
+        return;
+      }
+
+      loaderTip.classList.add("is-changing");
+      window.setTimeout(() => {
+        loaderTip.textContent = loaderTips[index];
+        loaderTip.classList.remove("is-changing");
+      }, 420);
+    }
+
+    function startLoaderTips() {
+      if (!loaderTip || loaderTips.length === 0) return;
+
+      loaderTipIndex = Math.floor(Math.random() * loaderTips.length);
+      showLoaderTip(loaderTipIndex, false);
+
+      loaderTipTimer = window.setInterval(() => {
+        loaderTipIndex = (loaderTipIndex + 1) % loaderTips.length;
+        showLoaderTip(loaderTipIndex);
+      }, 5000);
+    }
+
+    function stopLoaderTips() {
+      window.clearInterval(loaderTipTimer);
+      loaderTipTimer = 0;
     }
 
     function nearestPanelIndex() {
@@ -3142,11 +3202,13 @@
     }
 
     resetToHome();
+    startLoaderTips();
 
     window.addEventListener("load", () => {
       resetToHome();
       window.setTimeout(() => {
         resetToHome();
+        stopLoaderTips();
         preloader.classList.add("is-hidden");
         document.body.classList.add("ready");
       }, 2650);
