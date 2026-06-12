@@ -50,23 +50,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    body::after {
-      position: fixed;
-      inset: 0;
-      z-index: 85;
-      background:
-        radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.035), transparent 34vw),
-        var(--bg);
-      content: "";
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.22s var(--ease);
-    }
-
-    body.is-page-scrolling::after {
-      opacity: 0.78;
-    }
-
     body.ready .site-scroll {
       animation: siteFadeIn 0.8s var(--ease) both;
     }
@@ -100,6 +83,10 @@
     body.is-page-scrolling .site-scroll {
       pointer-events: none;
       user-select: none;
+    }
+
+    body.is-page-scrolling .panel {
+      will-change: transform;
     }
 
     .panel {
@@ -4220,6 +4207,7 @@
     let pageScrollTimer = 0;
     let pageScrollSettleTimer = 0;
     let pageScrollAnimating = false;
+    const pageSwitchBaseDuration = prefersReducedMotion ? 0 : 1120;
     let galleryWheelLocked = false;
     let touchStartY = 0;
     let loaderTipIndex = 0;
@@ -4386,6 +4374,12 @@
       return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     }
 
+    function easePageSlide(t) {
+      return t < 0.5
+        ? 8 * t * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 4) / 2;
+    }
+
     function finishPageSwitch(targetTop) {
       siteScroll.scrollTop = targetTop;
       pageScrollAnimating = false;
@@ -4394,7 +4388,7 @@
       updateSiteNav(activePanelIndex);
     }
 
-    function animatePageScroll(targetTop) {
+    function animatePageScroll(targetTop, targetIndex) {
       window.cancelAnimationFrame(pageScrollFrame);
       window.clearTimeout(pageScrollTimer);
       window.clearTimeout(pageScrollSettleTimer);
@@ -4406,12 +4400,31 @@
         return;
       }
 
-      pageScrollTimer = window.setTimeout(() => {
-        siteScroll.scrollTop = targetTop;
-        pageScrollFrame = window.requestAnimationFrame(() => {
-          pageScrollTimer = window.setTimeout(() => finishPageSwitch(targetTop), 220);
-        });
-      }, 120);
+      const startTop = siteScroll.scrollTop;
+      const distance = targetTop - startTop;
+      const panelDistance = Math.max(1, Math.abs((targetIndex ?? nearestPanelIndex()) - nearestPanelIndex()));
+      const duration = Math.min(1480, pageSwitchBaseDuration + ((panelDistance - 1) * 180));
+      const startedAt = performance.now();
+
+      if (Math.abs(distance) <= 1) {
+        finishPageSwitch(targetTop);
+        return;
+      }
+
+      function step(now) {
+        const progress = Math.min(1, (now - startedAt) / duration);
+        const eased = easePageSlide(progress);
+        siteScroll.scrollTop = startTop + (distance * eased);
+
+        if (progress < 1) {
+          pageScrollFrame = window.requestAnimationFrame(step);
+          return;
+        }
+
+        finishPageSwitch(targetTop);
+      }
+
+      pageScrollFrame = window.requestAnimationFrame(step);
     }
 
     function scrollToPanel(index) {
@@ -4427,7 +4440,7 @@
       if (targetIndex === activePanelIndex && !pageScrollAnimating) return;
       activePanelIndex = targetIndex;
       updateSiteNav(targetIndex);
-      animatePageScroll(pagePanels[targetIndex].offsetTop);
+      animatePageScroll(pagePanels[targetIndex].offsetTop, targetIndex);
     }
 
     function handlePageStep(direction) {
